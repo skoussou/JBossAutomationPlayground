@@ -17,27 +17,35 @@
       <acceptedTypes>
         <entry>
           <string>INSERT_ROW</string>
-          <boolean>false</boolean>
+          <boolean>true</boolean>
         </entry>
         <entry>
           <string>INSERT_COLUMN</string>
-          <boolean>false</boolean>
+          <boolean>true</boolean>
         </entry>
         <entry>
           <string>DELETE_ROW</string>
-          <boolean>false</boolean>
+          <boolean>true</boolean>
         </entry>
         <entry>
           <string>DELETE_COLUMN</string>
-          <boolean>false</boolean>
+          <boolean>true</boolean>
         </entry>
         <entry>
           <string>UPDATE_COLUMN</string>
-          <boolean>false</boolean>
+          <boolean>true</boolean>
         </entry>
       </acceptedTypes>
     </filter>
-    <entries/>
+    <entries>
+      <org.drools.guvnor.client.modeldriven.dt52.auditlog.InsertRowAuditLogEntry>
+        <dateOfEntry>2017-02-15 10:54:32.948 UTC</dateOfEntry>
+        <userName>brmsAdmin</userName>
+        <userComment></userComment>
+        <isDeleted>false</isDeleted>
+        <rowIndex>2</rowIndex>
+      </org.drools.guvnor.client.modeldriven.dt52.auditlog.InsertRowAuditLogEntry>
+    </entries>
   </auditLog>
   <imports>
     <imports/>
@@ -67,6 +75,19 @@
       </value>
       <value>
         <valueString>rule 555</valueString>
+        <dataType>STRING</dataType>
+        <isOtherwise>false</isOtherwise>
+      </value>
+    </list>
+    <list>
+      <value>
+        <valueNumeric class="int">3</valueNumeric>
+        <valueString></valueString>
+        <dataType>NUMERIC_INTEGER</dataType>
+        <isOtherwise>false</isOtherwise>
+      </value>
+      <value>
+        <valueString>rul121</valueString>
         <dataType>STRING</dataType>
         <isOtherwise>false</isOtherwise>
       </value>
