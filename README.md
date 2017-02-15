@@ -1,4 +1,4 @@
-JBossSoaTooling
-===============
+JBossAutomationPlayground
+==========================
 
-Using JBoss technologies create SOA solutions
+Using JBoss Automation technologies
