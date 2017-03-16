@@ -1,0 +1,12 @@
+ssh://localhost:8001/system
+brmsAdmin
+Password640!
+help
+list-org-units
+create-repo
+STELIOSAutomaticKIECLIRepo
+# >>User:  [NO ENTRY]
+# >>Password:  [NO ENTRY]
+# >>Remote origin:  [NO ENTRY]
+list-repo
+exit

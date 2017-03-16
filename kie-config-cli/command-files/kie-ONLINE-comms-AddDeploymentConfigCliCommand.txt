@@ -1,0 +1,16 @@
+###########################################
+### BUSINESS CENTRAL CONNECT PROPERTIES
+###########################################
+ssh://localhost:8001/system
+brmsAdmin
+Password640!
+################################################################################################
+add-deployment
+com.redhat
+dummy-artifact
+2.0.2
+defaultCLIKiebase
+defaultCLIKieSession
+PER_REQUEST
+list-deployment
+

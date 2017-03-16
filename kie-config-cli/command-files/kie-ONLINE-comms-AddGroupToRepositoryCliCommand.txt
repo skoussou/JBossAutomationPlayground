@@ -1,0 +1,11 @@
+###########################################
+### BUSINESS CENTRAL CONNECT PROPERTIES
+###########################################
+ssh://localhost:8001/system
+brmsAdmin
+Password640!
+################################################################################################
+add-group-repo
+azat-motor-overnight
+analyst
+list-repo

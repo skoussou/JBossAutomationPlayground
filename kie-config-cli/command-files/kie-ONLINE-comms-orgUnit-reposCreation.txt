@@ -1,0 +1,43 @@
+###########################################
+### BUSINESS CENTRAL CONNECT PROPERTIES
+###########################################
+ssh://localhost:8001/system
+brmsAdmin
+Password640!
+################################################################################################ 
+### Create REPO, ORG-UNIT and assign one to the other (repea whole section for each org-unit)
+################################################################################################ 
+create-repo
+core-motor-overnight
+# >>User:  [NO ENTRY]
+# >>Password:  [NO ENTRY]
+/home/stkousso/Stelios/sw10/BRMS/Distros/BACKUP_REPOS/core-motor-overnight-repo.git
+######## Create [Core ORG Unit]
+create-org-unit
+Core
+# >>Organizational Unit owner:
+# >>Default Group Id for this Organizational Unit:    
+# >>Repositories (comma separated list):
+######## Add REPO to org-unit
+add-repo-org-unit
+Core
+core-motor-overnight
+################################################################################################ 
+### Create REPO, ORG-UNIT and assign one to the other (repea whole section for each org-unit)
+################################################################################################ 
+create-repo
+azat-motor-overnight
+# >>User:  [NO ENTRY]
+# >>Password:  [NO ENTRY]
+/home/stkousso/Stelios/sw10/BRMS/Distros/BACKUP_REPOS/core-motor-overnight-repo.git
+######## Create [Core ORG Unit]
+create-org-unit
+Austria
+# >>Organizational Unit owner:
+# >>Default Group Id for this Organizational Unit:    
+# >>Repositories (comma separated list):
+######## Create [Core ORG Unit]
+add-repo-org-unit
+Austria
+azat-motor-overnight
+exit

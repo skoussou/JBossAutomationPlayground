@@ -1,0 +1,11 @@
+###########################################
+### BUSINESS CENTRAL CONNECT PROPERTIES
+###########################################
+ssh://localhost:8001/system
+brmsAdmin
+Password640!
+################################################################################################
+add-group-org-unit
+Core
+admin
+list-org-units
