@@ -9,7 +9,7 @@ Modes
         * push-changes command was explicitly executed
         * exit command will publish all local changes - to discard local changes on exit 'discard' command shall be used
 * offline (sort of installer style) - creates and manipulates system repository directly on the server (no discard option)
-* [NEW] online with file (./kie-config-cli.sh file={PATH to File with CLI Commands}) see for examples the ../commandfiles
+* [NEW] online with file (./kie-config-cli.sh file={PATH to File with CLI Commands}) see for examples the ../commandfiles (Single '#' to execute KIE-CLI command with no input '###' to add a comment ignored)
 
 Available commands
 ---------------------------
