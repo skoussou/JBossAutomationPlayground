@@ -1,0 +1,33 @@
+package com.skoussou.brms.local;
+
+import com.skoussou.brms.*;
+
+
+/* -------- BUILDING ACTIVITY PERMIT RULES -------- */
+
+rule "(LOCAL) - building-activity permit"
+//agenda-group "building-activity-local"
+
+agenda-group "building-activity"
+salience 1100
+//lock-on-active true
+when
+	$b : BuildingStructureActivity()
+	not IsPermitRequired(activity == $b)
+	$l : LegalApplicability( activity == $b)
+	BuildingStructureActivity( size.squareMeters > 50 );
+    $results : BRMSEngineResults()	
+then
+	//System.out.println("      (LOCAL) - building-activity permit required");
+	
+	// activate along with agenda-group "bulding-activity" and salience 1100
+	insert(new IsPermitRequired($b));
+	$results.getPermits().add(new Permit($b.getType().name(), "LOCAL"));
+	
+	retract($l);
+end  
+
+
+
+
+

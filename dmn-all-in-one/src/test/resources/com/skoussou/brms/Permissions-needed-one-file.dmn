@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?><semantic:definitions 
+                    xmlns:semantic="http://www.omg.org/spec/DMN/20151101/dmn.xsd" 
+                    xmlns:triso="http://www.trisotech.com/2015/triso/modeling" 
+                    xmlns:feel="http://www.omg.org/spec/FEEL/20140401" 
+                    xmlns:rss="http://purl.org/rss/2.0/" 
+                    xmlns:trisofeed="http://trisotech.com/feed" 
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                    exporter="DMN Modeler" exporterVersion="5.0.36.1" 
+                    id="_67c4b33e-d0fb-4b10-93c9-fb9759c61b72" 
+                    name="Permissions-needed-one-file" 
+                    namespace="http://www.trisotech.com/definitions/_67c4b33e-d0fb-4b10-93c9-fb9759c61b72" triso:logoChoice="Default">
+  <semantic:extensionElements>
+    <rss:rss xmlns="http://purl.org/rss/2.0/" version="2.0">
+            <rss:channel/>
+        </rss:rss>
+  </semantic:extensionElements>
+  <semantic:decision id="_c4e0fe63-bda4-414f-bfd4-b2c0a5d1c90f" name="Decision permit exploiting a marina">
+    <semantic:variable id="_1d4f69d1-7370-4bc8-a069-8e22ddb8f12c" name="Decision permit exploiting a marina" typeRef="feel:boolean"/>
+    <semantic:informationRequirement>
+      <semantic:requiredDecision href="#_e7f21c2d-86f5-40b0-973f-5e6f74df64be"/>
+    </semantic:informationRequirement>
+    <semantic:informationRequirement>
+      <semantic:requiredDecision href="#_f98752dd-fdc2-4fc5-b7c2-0de0d8b20db6"/>
+    </semantic:informationRequirement>
+    <semantic:decisionTable hitPolicy="UNIQUE" outputLabel="Decision permit exploiting a marina">
+      <semantic:input id="_6d06aebe-d125-457e-b377-e34c1c7e59ff" label="Less then 10 mooring also suitable for seaworthy ships">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>Less then 10 mooring also suitable for seaworthy ships</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:input id="_bd06d54b-0016-4907-b01f-5d658921158d" label="More than 50 moorings, not suitable for seaworthy ships">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>More than 50 moorings, not suitable for seaworthy ships</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:output id="_90a733c7-f8cc-4815-8ab8-310be3db28d0"/>
+      <semantic:rule id="_d4c85911-6048-4529-8191-a876f3929868">
+        <semantic:inputEntry id="_d4c85911-6048-4529-8191-a876f3929868-0">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_d4c85911-6048-4529-8191-a876f3929868-1">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_d4c85911-6048-4529-8191-a876f3929868-2">
+          <semantic:text>true</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_a2ff3291-d1a0-484d-8a2f-354324f7ba69">
+        <semantic:inputEntry id="_a2ff3291-d1a0-484d-8a2f-354324f7ba69-0">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_a2ff3291-d1a0-484d-8a2f-354324f7ba69-1">
+          <semantic:text/>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_a2ff3291-d1a0-484d-8a2f-354324f7ba69-2">
+          <semantic:text>false</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_ef5f1ba6-a025-47ac-a005-1808ba167f5a">
+        <semantic:inputEntry id="_ef5f1ba6-a025-47ac-a005-1808ba167f5a-0">
+          <semantic:text/>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_ef5f1ba6-a025-47ac-a005-1808ba167f5a-1">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_ef5f1ba6-a025-47ac-a005-1808ba167f5a-2">
+          <semantic:text>false</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+    </semantic:decisionTable>
+  </semantic:decision>
+  <semantic:decision id="_e7f21c2d-86f5-40b0-973f-5e6f74df64be" name="Less then 10 mooring also suitable for seaworthy ships">
+    <semantic:variable id="_60309c43-4f11-4e4a-8163-59dec1222456" name="Less then 10 mooring also suitable for seaworthy ships" typeRef="feel:boolean"/>
+    <semantic:informationRequirement>
+      <semantic:requiredInput href="#_ec15f9ae-e9cf-4a98-993a-5d19b4c8376f"/>
+    </semantic:informationRequirement>
+    <semantic:informationRequirement>
+      <semantic:requiredInput href="#_0ada5069-7e88-47b0-9658-fbb96e64c774"/>
+    </semantic:informationRequirement>
+    <semantic:decisionTable hitPolicy="UNIQUE" outputLabel="Less then 10 mooring also suitable for seaworthy ships">
+      <semantic:input id="_45bc9f7f-2ece-44f9-9325-52b53ddbf956" label="less than 10 moorings">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>less than 10 moorings</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:input id="_4d5f2483-3f53-4738-8802-3ae1ddea86d2" label="Moorings for seaworthy ships">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>Moorings for seaworthy ships</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:output id="_815f5e38-4610-41eb-ab73-8db7492a9166"/>
+      <semantic:rule id="_fb1bb5c6-3b46-4678-adaa-20486028dac7">
+        <semantic:inputEntry id="_fb1bb5c6-3b46-4678-adaa-20486028dac7-0">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_fb1bb5c6-3b46-4678-adaa-20486028dac7-1">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_fb1bb5c6-3b46-4678-adaa-20486028dac7-2">
+          <semantic:text>true</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_114fe4a2-7558-4307-973b-92ed7a08edc4">
+        <semantic:inputEntry id="_114fe4a2-7558-4307-973b-92ed7a08edc4-0">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_114fe4a2-7558-4307-973b-92ed7a08edc4-1">
+          <semantic:text/>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_114fe4a2-7558-4307-973b-92ed7a08edc4-2">
+          <semantic:text>false</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_673edbdd-f878-4cf6-945f-0001494a704f">
+        <semantic:inputEntry id="_673edbdd-f878-4cf6-945f-0001494a704f-0">
+          <semantic:text/>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_673edbdd-f878-4cf6-945f-0001494a704f-1">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_673edbdd-f878-4cf6-945f-0001494a704f-2">
+          <semantic:text>false</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+    </semantic:decisionTable>
+  </semantic:decision>
+  <semantic:decision id="_f98752dd-fdc2-4fc5-b7c2-0de0d8b20db6" name="More than 50 moorings, not suitable for seaworthy ships">
+    <semantic:variable id="_32fff7b9-9e15-4b44-a103-3d726592df20" name="More than 50 moorings, not suitable for seaworthy ships" typeRef="feel:boolean"/>
+    <semantic:informationRequirement>
+      <semantic:requiredInput href="#_230bb08e-f5e7-4e08-9d65-0fb09570dc7c"/>
+    </semantic:informationRequirement>
+    <semantic:informationRequirement>
+      <semantic:requiredInput href="#_0ada5069-7e88-47b0-9658-fbb96e64c774"/>
+    </semantic:informationRequirement>
+    <semantic:decisionTable hitPolicy="UNIQUE" outputLabel="More than 50 moorings, not suitable for seaworthy ships">
+      <semantic:input id="_7e971a45-521e-4f18-97de-f98dd4c36c42" label="More than 50 moorings">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>More than 50 moorings</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:input id="_e57f0520-387f-4004-b2a4-1b4b08588f90" label="Moorings for seaworthy ships">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>Moorings for seaworthy ships</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:output id="_bdc23752-4125-4198-973f-e6baa4cb0d35"/>
+      <semantic:rule id="_0d476222-804e-427d-b8a8-67992a0d181d">
+        <semantic:inputEntry id="_0d476222-804e-427d-b8a8-67992a0d181d-0">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_0d476222-804e-427d-b8a8-67992a0d181d-1">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_0d476222-804e-427d-b8a8-67992a0d181d-2">
+          <semantic:text>true</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_d31b9a9f-29b5-4ae5-ae2d-75ad301d5cca">
+        <semantic:inputEntry id="_d31b9a9f-29b5-4ae5-ae2d-75ad301d5cca-0">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_d31b9a9f-29b5-4ae5-ae2d-75ad301d5cca-1">
+          <semantic:text/>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_d31b9a9f-29b5-4ae5-ae2d-75ad301d5cca-2">
+          <semantic:text>false</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_76ded937-a4d0-49c8-b4e4-8f99052ca207">
+        <semantic:inputEntry id="_76ded937-a4d0-49c8-b4e4-8f99052ca207-0">
+          <semantic:text/>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_76ded937-a4d0-49c8-b4e4-8f99052ca207-1">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_76ded937-a4d0-49c8-b4e4-8f99052ca207-2">
+          <semantic:text>false</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+    </semantic:decisionTable>
+  </semantic:decision>
+  <semantic:decision id="_68495484-407c-41fb-9745-cdb049f3e9a4" name="Exploting a marina is applicable">
+    <semantic:variable id="_a9c0a0fb-06f9-4103-b02e-4b1abdf43bc2" name="Exploting a marina is applicable" typeRef="feel:boolean"/>
+    <semantic:informationRequirement>
+      <semantic:requiredDecision href="#_c38fd9be-35ca-4e79-a921-5fcbdb58ddac"/>
+    </semantic:informationRequirement>
+    <semantic:informationRequirement>
+      <semantic:requiredInput href="#_d8ae046d-39a7-4a0e-b2d8-b94ae7c69d05"/>
+    </semantic:informationRequirement>
+    <semantic:decisionTable hitPolicy="UNIQUE" outputLabel="Exploting a marina is applicable">
+      <semantic:input id="_d4a469d1-69c7-48d8-9dd2-4dacdbeccd2d" label="Ship is a pleasure craft">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>Ship is a pleasure craft</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:input id="_8905ceeb-93fc-42f9-af81-8bd277c9bdb1" label="Marina offers mooring">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>Marina offers mooring</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:output id="_51bb7236-975a-41bd-8e7f-334749fb94cf"/>
+      <semantic:rule id="_ce4f288a-26bb-42db-8ded-0d2b638efc32">
+        <semantic:inputEntry id="_ce4f288a-26bb-42db-8ded-0d2b638efc32-0">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_ce4f288a-26bb-42db-8ded-0d2b638efc32-1">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_ce4f288a-26bb-42db-8ded-0d2b638efc32-2">
+          <semantic:text>true</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_3e99d1c1-f120-423d-a62c-037b8682ac03">
+        <semantic:inputEntry id="_3e99d1c1-f120-423d-a62c-037b8682ac03-0">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_3e99d1c1-f120-423d-a62c-037b8682ac03-1">
+          <semantic:text/>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_3e99d1c1-f120-423d-a62c-037b8682ac03-2">
+          <semantic:text>false</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_db5415e7-4230-4227-8a5f-50e009ad3a76">
+        <semantic:inputEntry id="_db5415e7-4230-4227-8a5f-50e009ad3a76-0">
+          <semantic:text/>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_db5415e7-4230-4227-8a5f-50e009ad3a76-1">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_db5415e7-4230-4227-8a5f-50e009ad3a76-2">
+          <semantic:text>false</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+    </semantic:decisionTable>
+  </semantic:decision>
+  <semantic:decision id="_c38fd9be-35ca-4e79-a921-5fcbdb58ddac" name="Ship is a pleasure craft">
+    <semantic:variable id="_f1cd33ca-2476-4940-8b5e-0e8284b424d7" name="Ship is a pleasure craft" typeRef="feel:boolean"/>
+    <semantic:informationRequirement>
+      <semantic:requiredInput href="#_3d8fdc64-649a-4a50-b324-8f645478fc67"/>
+    </semantic:informationRequirement>
+    <semantic:informationRequirement>
+      <semantic:requiredInput href="#_5a70e3fd-35f5-4246-9a19-e076bd5ca531"/>
+    </semantic:informationRequirement>
+    <semantic:decisionTable hitPolicy="UNIQUE" outputLabel="Ship is a pleasure craft">
+      <semantic:input id="_d25955e6-d38e-43c0-8db1-30dba150fa99" label="Length is more than 4 meters">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>Length is more than 4 meters</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:input id="_17caaaea-0bf3-45da-9939-a93d9f8dbe89" label="Intended for commercial use">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>Intended for commercial use</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:output id="_e7438dad-f829-4e15-8f1e-9434c6024abb"/>
+      <semantic:rule id="_d1c9ee12-5629-4392-a941-ab3d01fe4bd5">
+        <semantic:inputEntry id="_d1c9ee12-5629-4392-a941-ab3d01fe4bd5-0">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_d1c9ee12-5629-4392-a941-ab3d01fe4bd5-1">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_d1c9ee12-5629-4392-a941-ab3d01fe4bd5-2">
+          <semantic:text>true</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_cf3570d0-b2ac-48b0-80ea-733a2a87bfa4">
+        <semantic:inputEntry id="_cf3570d0-b2ac-48b0-80ea-733a2a87bfa4-0">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_cf3570d0-b2ac-48b0-80ea-733a2a87bfa4-1">
+          <semantic:text>-</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_cf3570d0-b2ac-48b0-80ea-733a2a87bfa4-2">
+          <semantic:text>false</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_d75e204c-e6d0-4de6-ac76-51fee5c66b95">
+        <semantic:inputEntry id="_d75e204c-e6d0-4de6-ac76-51fee5c66b95-0">
+          <semantic:text>-</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_d75e204c-e6d0-4de6-ac76-51fee5c66b95-1">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_d75e204c-e6d0-4de6-ac76-51fee5c66b95-2">
+          <semantic:text>false</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+    </semantic:decisionTable>
+  </semantic:decision>
+  <semantic:inputData id="_ec15f9ae-e9cf-4a98-993a-5d19b4c8376f" name="less than 10 moorings">
+    <semantic:variable id="_c98c74fa-b909-4a2e-834a-c589373dec26" name="less than 10 moorings" typeRef="feel:boolean"/>
+  </semantic:inputData>
+  <semantic:inputData id="_0ada5069-7e88-47b0-9658-fbb96e64c774" name="Moorings for seaworthy ships">
+    <semantic:variable id="_27e1e095-0054-4d56-bc12-883a4efd47b3" name="Moorings for seaworthy ships" typeRef="feel:boolean"/>
+  </semantic:inputData>
+  <semantic:inputData id="_230bb08e-f5e7-4e08-9d65-0fb09570dc7c" name="More than 50 moorings">
+    <semantic:variable id="_ec5da62c-a1e1-4bc5-8a69-72caf1bbe8b6" name="More than 50 moorings" typeRef="feel:boolean"/>
+  </semantic:inputData>
+  <semantic:inputData id="_d8ae046d-39a7-4a0e-b2d8-b94ae7c69d05" name="Marina offers mooring">
+    <semantic:variable id="_12deadc1-6563-4ad6-bae0-1817625d1269" name="Marina offers mooring" typeRef="feel:boolean"/>
+  </semantic:inputData>
+  <semantic:inputData id="_3d8fdc64-649a-4a50-b324-8f645478fc67" name="Length is more than 4 meters">
+    <semantic:variable id="_19e26d83-37e3-4a20-9524-2f15e4455936" name="Length is more than 4 meters" typeRef="feel:boolean"/>
+  </semantic:inputData>
+  <semantic:inputData id="_5a70e3fd-35f5-4246-9a19-e076bd5ca531" name="Intended for commercial use">
+    <semantic:variable id="_26717951-6c66-4fe1-9ba8-a8c46b241c04" name="Intended for commercial use" typeRef="feel:boolean"/>
+  </semantic:inputData>
+  <semantic:decision id="_63f74050-2248-4bda-9d6c-a9db63c51568" name="Permission is needed">
+    <semantic:variable id="_bff8fc14-7f0c-4538-b802-d108a00edb86" name="Permission is needed" typeRef="feel:boolean"/>
+    <semantic:informationRequirement>
+      <semantic:requiredDecision href="#_c4e0fe63-bda4-414f-bfd4-b2c0a5d1c90f"/>
+    </semantic:informationRequirement>
+    <semantic:informationRequirement>
+      <semantic:requiredDecision href="#_68495484-407c-41fb-9745-cdb049f3e9a4"/>
+    </semantic:informationRequirement>
+    <semantic:decisionTable hitPolicy="UNIQUE" outputLabel="Permission is needed">
+      <semantic:input id="_14dcc128-73c9-4d3c-90a6-00a47ce47bae" label="Decision permit exploiting a marina">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>Decision permit exploiting a marina</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:input id="_1e132fe2-1e59-4b99-bba8-7b7790444bc1" label="Exploting a marina is applicable">
+        <semantic:inputExpression typeRef="feel:boolean">
+          <semantic:text>Exploting a marina is applicable</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:output id="_751e93a4-4d2e-4ae1-bcb0-66b951c3336e"/>
+      <semantic:rule id="_2e30f8fb-dc37-4cd3-ae7d-a519d9044f2c">
+        <semantic:inputEntry id="_2e30f8fb-dc37-4cd3-ae7d-a519d9044f2c-0">
+          <semantic:text/>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_2e30f8fb-dc37-4cd3-ae7d-a519d9044f2c-1">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_2e30f8fb-dc37-4cd3-ae7d-a519d9044f2c-2">
+          <semantic:text>"Rules do not apply"</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_28c31e5d-627c-4b2b-9fe0-617284a3473f">
+        <semantic:inputEntry id="_28c31e5d-627c-4b2b-9fe0-617284a3473f-0">
+          <semantic:text>false</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_28c31e5d-627c-4b2b-9fe0-617284a3473f-1">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_28c31e5d-627c-4b2b-9fe0-617284a3473f-2">
+          <semantic:text>"No permit needed"</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+      <semantic:rule id="_635b50e0-5a96-431f-a04a-2b04dee329eb">
+        <semantic:inputEntry id="_635b50e0-5a96-431f-a04a-2b04dee329eb-0">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:inputEntry id="_635b50e0-5a96-431f-a04a-2b04dee329eb-1">
+          <semantic:text>true</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_635b50e0-5a96-431f-a04a-2b04dee329eb-2">
+          <semantic:text>"Permit needed"</semantic:text>
+        </semantic:outputEntry>
+      </semantic:rule>
+    </semantic:decisionTable>
+  </semantic:decision>
+</semantic:definitions>

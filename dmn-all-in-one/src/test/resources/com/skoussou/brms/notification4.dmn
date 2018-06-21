@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="definitions" name="building-structure-rules" namespace="https://github.com/droolsjbpm/kie-dmn">
+  <decision id="building_structure_permit" name="_building_structure_permit">
+    <extensionElements>
+      <biodi:bounds x="566" y="198" width="180" height="80" />
+      <biodi:edge source="Decision_1bn8kzs">
+        <biodi:waypoints x="560" y="465" />
+        <biodi:waypoints x="632" y="278" />
+      </biodi:edge>
+      <biodi:edge source="_oNotificationStatus">
+        <biodi:waypoints x="464" y="356" />
+        <biodi:waypoints x="620" y="278" />
+      </biodi:edge>
+      <biodi:edge source="InputData_0ynzcni">
+        <biodi:waypoints x="652" y="390" />
+        <biodi:waypoints x="655" y="278" />
+      </biodi:edge>
+    </extensionElements>
+    <informationRequirement>
+      <requiredDecision href="#Decision_1bn8kzs" />
+    </informationRequirement>
+    <informationRequirement>
+      <requiredDecision href="#_oNotificationStatus" />
+    </informationRequirement>
+    <informationRequirement>
+      <requiredInput href="#InputData_0ynzcni" />
+    </informationRequirement>
+    <decisionTable id="decisionTable">
+      <input id="input1" label="existingActivityApplicability" camunda:inputVariable="">
+        <inputExpression id="inputExpression1" typeRef="boolean">        <text>_iexistingActivityApplicability</text>
+</inputExpression>
+      </input>
+      <output id="output1" label="Permit Status" name="_oPermitStatus" typeRef="string">
+        <outputValues id="UnaryTests_07rpoc9">        <text><![CDATA["Building Activity Province Permit Required"]]></text>
+</outputValues>
+      </output>
+      <rule id="row-332077304-1">
+        <inputEntry id="UnaryTests_035hfy9">        <text>true</text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0po5fyf">        <text></text>
+</outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="_oNotificationStatus" name="building_structure_province_notifications">
+    <extensionElements>
+      <biodi:bounds x="293" y="356" width="180" height="80" />
+      <biodi:edge source="InputData_0z3t9pw">
+        <biodi:waypoints x="242" y="510" />
+        <biodi:waypoints x="334" y="436" />
+      </biodi:edge>
+      <biodi:edge source="InputData_0bbas0g">
+        <biodi:waypoints x="360" y="628" />
+        <biodi:waypoints x="379" y="436" />
+      </biodi:edge>
+      <biodi:edge source="InputData_15abekg">
+        <biodi:waypoints x="483" y="514" />
+        <biodi:waypoints x="417" y="436" />
+      </biodi:edge>
+    </extensionElements>
+    <informationRequirement>
+      <requiredInput href="#InputData_0z3t9pw" />
+    </informationRequirement>
+    <informationRequirement>
+      <requiredInput href="#InputData_0bbas0g" />
+    </informationRequirement>
+    <informationRequirement>
+      <requiredInput href="#InputData_15abekg" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_00tc4ut">
+      <input id="InputClause_12wipg4" label="existingActivityApplicability" camunda:inputVariable="">
+        <inputExpression id="LiteralExpression_0setlc9" typeRef="boolean">        <text>existingActivityApplicability</text>
+</inputExpression>
+      </input>
+      <input id="InputClause_0egkowy" label="Distance" camunda:inputVariable="">
+        <inputExpression id="LiteralExpression_1kaj4wo" typeRef="integer">        <text>_iDistance</text>
+</inputExpression>
+      </input>
+      <input id="InputClause_1a3bit0" label="willIncreaseTraffic" camunda:inputVariable="">
+        <inputExpression id="LiteralExpression_0xnbpq9" typeRef="boolean">        <text>_iwillIncreaseTraffic</text>
+</inputExpression>
+      </input>
+      <output id="OutputClause_1y1s3ot" label="Notification Status" name="_oNotificationStatus" typeRef="string">
+        <outputValues id="UnaryTests_1sqq9rx">        <text><![CDATA["Notification to Province Approved","Notification to Province Declined"]]></text>
+</outputValues>
+      </output>
+      <rule id="row-332077304-2">
+        <inputEntry id="UnaryTests_0en25b6">        <text>true</text>
+</inputEntry>
+        <inputEntry id="UnaryTests_1bzkav4">        <text><![CDATA[>= 10000]]></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_13hy8oy">        <text>true</text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_070vtcg" expressionLanguage="feel">        <text><![CDATA["Notification to Province Approved"]]></text>
+</outputEntry>
+      </rule>
+      <rule id="row-332077304-3">
+        <inputEntry id="UnaryTests_0bhfkju">        <text>true</text>
+</inputEntry>
+        <inputEntry id="UnaryTests_1et55fn">        <text><![CDATA[< 10000]]></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_1oamfx7">        <text>true</text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_1hrx1jv">        <text><![CDATA["Notification to Province Declined"]]></text>
+</outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_0ynzcni" name="_iexistingActivityApplicability">
+    <extensionElements>
+      <biodi:bounds x="588" y="390" width="125" height="45" />
+    </extensionElements>
+  </inputData>
+  <inputData id="InputData_0z3t9pw" name="existingActivityApplicability">
+    <extensionElements>
+      <biodi:bounds x="151" y="510" width="125" height="45" />
+    </extensionElements>
+  </inputData>
+  <inputData id="InputData_0bbas0g" name="_iDistance">
+    <extensionElements>
+      <biodi:bounds x="295" y="628" width="125" height="45" />
+    </extensionElements>
+  </inputData>
+  <inputData id="InputData_15abekg" name="_iwillIncreaseTraffic">
+    <extensionElements>
+      <biodi:bounds x="439" y="514" width="125" height="45" />
+    </extensionElements>
+  </inputData>
+</definitions>

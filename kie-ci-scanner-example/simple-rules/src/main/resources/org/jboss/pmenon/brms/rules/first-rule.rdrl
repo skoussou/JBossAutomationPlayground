@@ -1,0 +1,12 @@
+package org.jboss.pmenon.brms.rules;
+
+import org.jboss.brms.fact.PersonFact;
+
+rule "first-rule"
+	dialect "java"
+	no-loop true
+	when
+		$p : PersonFact( name == "Paulo Menon" )
+	then
+		System.out.println("Gold Membership! age="+ $p.getAge());
+end

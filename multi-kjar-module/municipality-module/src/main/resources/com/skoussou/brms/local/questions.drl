@@ -1,0 +1,26 @@
+//created on: 17-Nov-2016
+package com.skoussou.brms.local
+
+//list any import classes here.
+import java.util.List;
+import com.skoussou.brms.*;
+
+
+//declare any global variables here
+
+query isContainedIn( String x, String y )
+  Question( x, y; )
+  or
+  ( Question( z, y; ) and isContainedIn( x, z; ) )
+end
+
+
+rule "Determine Questions"
+agenda-group "questiions-marina-exploitation"
+
+when
+  String( this == "go5" )
+  isContainedIn(thing, location; )
+then
+  System.out.println( "thing" + thing + "is in" + location );
+end

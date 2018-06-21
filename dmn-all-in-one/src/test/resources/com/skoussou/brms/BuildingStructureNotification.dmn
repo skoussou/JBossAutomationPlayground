@@ -1,0 +1,26 @@
+<definitions id="exploitmarina" name="exploitmarina"
+    namespace="http://omgevingswet.nl/exploitmarina/"
+    xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd"
+    xmlns:feel="http://www.omg.org/spec/FEEL/20140401"
+	xmlns:dmnp="http://omgevingswet.nl/dmnplus">
+
+	<decision name="notification" id="notification">
+		<variable name="permit" typeRef="feel:boolean"/>
+
+		<informationRequirement>
+			<requiredDecision href="morethan4weeks"/>
+		</informationRequirement>
+
+		<literalExpression>
+			<text>morethan4weeks</text>
+		</literalExpression>
+ 	</decision>
+
+	<inputData name="morethan4weeks" id="vraag/morethan4weeks">
+		<variable name="morethan4weeks" typeRef="feel:boolean"/>
+		<extensionElements>
+			<dmnp:vraagText>Is the start date of exploiting the marina more than 4 weeks from now?</dmnp:vraagText>
+		</extensionElements>
+	</inputData>
+
+</definitions>

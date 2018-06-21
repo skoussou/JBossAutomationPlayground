@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.skoussou.brms</groupId>
+	<artifactId>kjar-builder</artifactId>
+	<version>1.0.0</version>
+
+
+	<properties>
+		<version.drools>6.4.0.Final-redhat-3</version.drools>
+	</properties>
+
+	<dependencies>
+		<!-- kie api dependency -->
+		<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-api</artifactId>
+			<version>${version.drools}</version>
+		</dependency>
+	
+			<!-- drools (internal) dependency -->
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
+			<version>${version.drools}</version>
+		</dependency>
+		
+				<!-- test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+			<version>4.11</version>
+		</dependency>
+	</dependencies>
+		
+</project>

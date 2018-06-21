@@ -1,0 +1,39 @@
+//created on: 16-Nov-2016
+package com.skoussou.brms.local;
+
+//list any import classes here.
+
+
+
+//declare any global variables here
+
+function String defineAgenda(String activityType) {
+	if (activityType.equalsIgnoreCase(ActivityType.BUILDING_STRUCTURE.name())) {
+    	return "building-activity";
+    } else if (activityType.equalsIgnoreCase(ActivityType.EXPLOITING_MARINA.name())) {
+    	return "exploiting-marina-activity";    
+    }
+    return "NONE";
+}
+
+/* -------- DIRECTIION RULES -------- */
+
+rule "Rule Provide Transition Applicability-To-Permit-Check-Agendas"
+when
+	//$agenadsList : ArrayList()
+	$applicability : LegalApplicability()
+then
+	//drools.getWorkingMemory().setFocus("bulding-activity-local");
+	//drools.getWorkingMemory().setFocus("bulding-activity");
+    //System.out.println("<-------------------------------------------------> ");
+    System.out.println("      About to activate AGENDA for activity --> "+$applicability.getType().name());
+	drools.getWorkingMemory().setFocus(defineAgenda($applicability.getType().name()));
+end
+
+rule "Rule No More Rules in Agenda"
+when
+	eval(true)
+then
+	//drools.getWorkingMemory().setFocus("transition-from-applicability");
+	//drools.getWorkingMemory().clearAgenda();
+end

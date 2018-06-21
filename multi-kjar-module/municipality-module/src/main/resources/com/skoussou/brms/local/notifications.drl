@@ -1,0 +1,29 @@
+//created on: 16-Nov-2016
+package com.skoussou.brms.local;
+
+//list any import classes here.
+import java.util.List;
+import com.skoussou.brms.*;
+
+//declare any global variables here
+
+
+
+
+rule "Determine Notifications"
+salience 100
+//agenda-group "bulding-activity-applicability"
+//agenda-group "notifications"
+when
+   $permits : List() from collect (IsPermitRequired ())
+   $results : BRMSEngineResults()
+   not LegalApplicability()
+then
+for( int i = 0; i < $permits.size(); ++i ){
+    IsPermitRequired p = (IsPermitRequired)$permits.get( i );
+    //modify( s ){ setCat( "senior" ) }
+       System.out.println("	(notifications) - will notify for permit ["+ p.getActivity().getType() +"]");
+       $results.getNotifications().add(new Notification("RELATED BODY", "(notifications) - will notify for permit ["+ p.getActivity().getType() +"]"));
+    
+  }
+end

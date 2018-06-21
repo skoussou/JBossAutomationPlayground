@@ -1,0 +1,31 @@
+//created on: 16-Nov-2016
+package com.skoussou.brms.local;
+
+//list any import classes here.
+import com.skoussou.brms.*;
+
+//declare any global variables here
+
+
+rule "Determine Building Structure Applicabilty"
+no-loop
+//agenda-group "bulding-activity-applicability"
+agenda-group "applicability"
+
+when
+  $b : BuildingStructureActivity()
+then
+  insert(new LegalApplicability(ActivityType.BUILDING_STRUCTURE, $b));
+  //System.out.println("	(applicability) - adding activity BuildingStructureActivity");
+end
+
+rule "Determine Marina Exploiting Structure Applicabilty"
+no-loop
+//agenda-group "bulding-activity-applicability"
+agenda-group "applicability"
+when
+  $b : ExploitingMarinaActivity()
+then
+  insert(new LegalApplicability(ActivityType.EXPLOITING_MARINA, $b));
+  //System.out.println("	(applicability) - adding activity ExploitingMarinaActivity");
+end

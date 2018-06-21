@@ -1,0 +1,10 @@
+//created on: 04-Nov-2016
+package org.jboss.pmenon.brms.rules
+
+
+rule "always fire"
+	when
+		eval(true)
+	then
+		System.out.println("RULE V 1.8");
+end
