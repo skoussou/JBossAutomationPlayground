@@ -1,0 +1,27 @@
+import org.drools.core.process.core.datatype.impl.type.StringDataType;
+import org.drools.core.process.core.datatype.impl.type.ObjectDataType;
+import org.drools.core.process.core.datatype.impl.type.BooleanDataType;
+
+[
+  [
+    "name" : "TimerDurationCalcs",
+    "parameters" : [
+        "untilDateValue" : new StringDataType(),
+        "untilDateFormat" : new StringDataType(),
+        "millisecondsTimeEnd" : new ObjectDataType(),
+        "fromDateValue" : new StringDataType(),
+        "fromDateFormat" : new StringDataType(),
+        "millisecondsTimeStart" : new ObjectDataType(),
+        "fromNow" : new StringDataType(),
+        "businessExceptionHandle" : new StringDataType(),
+        "dateTomorrow6AM" : new StringDataType()
+    ],
+    "results" : [
+        "Result" : new ObjectDataType(),
+    ],
+    "category" : "QPS",
+    "displayName" : "TimerDurationCalcs",
+    "defaultHandler" : "qa.com.qatarpost.wih.timers.CalculateTimerWIH",  
+    "icon" : "defaultservicenodeicon.png"
+  ]
+]

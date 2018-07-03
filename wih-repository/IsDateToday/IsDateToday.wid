@@ -1,0 +1,22 @@
+import org.drools.core.process.core.datatype.impl.type.StringDataType;
+import org.drools.core.process.core.datatype.impl.type.ObjectDataType;
+import org.drools.core.process.core.datatype.impl.type.BooleanDataType;
+
+[
+    [
+    "name" : "IsDateToday",
+    "parameters" : [
+        "businessExceptionHandle" : new BooleanDataType(),
+        "dateGiven" : new StringDataType(),
+        "dateGivenFormat" : new StringDataType()
+    ],
+    "results" : [
+        "Result" : new ObjectDataType(),
+    ],
+    "category" : "QPS",
+    "displayName" : "IsDateToday",
+    "defaultHandler" : "qa.com.qatarpost.wih.timers.IsDateTodayWIH",  
+    "icon" : "defaultservicenodeicon.png"
+  ]
+
+]
