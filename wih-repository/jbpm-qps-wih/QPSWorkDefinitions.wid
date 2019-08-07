@@ -1,0 +1,108 @@
+import org.drools.core.process.core.datatype.impl.type.StringDataType;
+import org.drools.core.process.core.datatype.impl.type.ObjectDataType;
+import org.drools.core.process.core.datatype.impl.type.BooleanDataType;
+
+[
+  [
+    "name" : "Email",
+    "parameters" : [
+      "From" : new StringDataType(),
+      "To" : new StringDataType(),
+      "Subject" : new StringDataType(),
+      "Body" : new StringDataType()
+    ],
+    "displayName" : "Email",
+    "icon" : "defaultemailicon.gif"
+  ],
+
+  [
+    "name" : "Log",
+    "parameters" : [
+      "Message" : new StringDataType()
+    ],
+    "displayName" : "Log",
+    "icon" : "defaultlogicon.gif"
+  ],
+
+  [
+    "name" : "WebService",
+    "parameters" : [
+        "Url" : new StringDataType(),
+         "Namespace" : new StringDataType(),
+         "Interface" : new StringDataType(),
+         "Operation" : new StringDataType(),
+         "Parameter" : new StringDataType(),
+         "Endpoint" : new StringDataType(),
+         "Mode" : new StringDataType()
+    ],
+    "results" : [
+        "Result" : new ObjectDataType(),
+    ],
+    "displayName" : "WS",
+    "icon" : "defaultservicenodeicon.png"
+  ],
+
+  [
+    "name" : "Rest",
+    "parameters" : [
+        "Url" : new StringDataType(),
+        "Method" : new StringDataType(),
+        "ConnectTimeout" : new StringDataType(),
+        "ReadTimeout" : new StringDataType(),
+        "Username" : new StringDataType(),
+        "Password" : new StringDataType()
+    ],
+    "results" : [
+        "Result" : new ObjectDataType(),
+    ],
+    "displayName" : "REST",
+    "icon" : "defaultservicenodeicon.png"
+  ],
+  
+  [
+    "name" : "TimerDurationCalcs",
+    "parameters" : [
+        "untilDateValue" : new StringDataType(),
+        "untilDateFormat" : new StringDataType(),
+        "millisecondsTimeEnd" : new ObjectDataType(),
+        "fromDateValue" : new StringDataType(),
+        "fromDateFormat" : new StringDataType(),
+        "millisecondsTimeStart" : new ObjectDataType(),
+        "fromNow" : new BooleanDataType(),
+        "businessExceptionHandle" : new BooleanDataType(),
+        "dateTomorrow6AM" : new BooleanDataType(),
+    ],
+    "results" : [
+        "Result" : new ObjectDataType(),
+    ],
+    "category", "QPS",
+    "displayName" : "TimerDurationCalcs",
+    "defaultHandler : "qa.com.qatarpost.wih.timers.CalculateTimerWIH"
+    "icon" : "defaultservicenodeicon.png"
+  ],
+    
+  [
+    "name" : "AddEventWIH",
+    "parameters" : [
+        "date_time": new StringDataType(),
+		"event_code": new StringDataType(),
+		"tracking_number": new StringDataType(),
+		"branch": new StringDataType(),
+		"department": new StringDataType(),
+		"event_code": new StringDataType(),
+		"inbound_outbound": new StringDataType(),
+		"product_service_code": new StringDataType(),
+		"remarks": new StringDataType(),
+		"source": new StringDataType(),
+		"user_id": new StringDataType()
+    ],
+    "results" : [
+        "Result" : new ObjectDataType(),
+    ],
+    "category", "QPS",
+    "displayName" : "AddEventWIH",
+    "defaultHandler : "qa.com.qatarpost.wih.notifications.AddEventWIH",
+    "icon" : "defaultservicenodeicon.png"
+  ]
+
+]

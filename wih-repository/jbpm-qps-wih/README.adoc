@@ -1,0 +1,9 @@
+= These are custom Work Item Handlers (WIH) we have generated for to QPS Processes
+
+== How to make available *WIH* to use in processes
+** copy the WorkDefinitions.wid into your processes project
+** a second more easy to use custom work item handlers way is to create and run your own repository. Refer to this: http://mswiderski.blogspot.com/2018/06/jbpm-workitem-repository-updates.html
+
+== Available WorkItemHandlers
+* *CalculateTimerWIH*[Implemented] - Given combinations of dates, flags defines an ISO-8601 date format duration for a BPMN Timer
+* *SendNotificationsToUserWIH*[Not Implemented] - Calls the event management service exposed by QPS Integration
