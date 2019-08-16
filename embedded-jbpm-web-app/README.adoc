@@ -12,4 +12,7 @@
 * *SETUP-EAP-PROFILE.txt* : setting up the EAP environent
 * *RHPAM-db.sql*: SQL Scripts to inspect DB for embedded RHPAM (Runtime)
 * *AuditDB.sql*: SQL Scripts to inspect DB for audit messages (Audit)
+* *kie-deployment-descriptor.xml*: when starting the EAP use  -Dorg.kie.deployment.desc.location=file:///PATH-TO/kie-deployment-descriptor.xml to set the correct settings
+
+
 
