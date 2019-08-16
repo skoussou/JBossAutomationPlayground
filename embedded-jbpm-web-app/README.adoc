@@ -1,0 +1,15 @@
+= Example of JBPM Embedded in Web Application
+
+
+== Projects 
+* *business-app-jbpm-war*: Main web application bootstrapping/embedding the JBPM Engine and contains REST APIs to deploy/undeploy KJARs, SOAP APIs to start process/complete tasks
+* *jbpm-audit-jms-receiver*: Receiver of audit log messages via JMS. Utilizes custom 'MaestroAuditTaskData.java' DTO
+* *skeleton-tests-kjar-1*: A KJAR
+
+== Resources
+* *Business-App-Embedded-JBPM-soapui-project.xml*: SOAPUI SOA-P Endpoints project to start process and complete taskss
+* *KJAR-REST-LIFECYCLE-localhost-soapui-project.xml*: SOAPUI REST Endpoints project to deploy/undeploy KJARs
+* *SETUP-EAP-PROFILE.txt* : setting up the EAP environent
+* *RHPAM-db.sql*: SQL Scripts to inspect DB for embedded RHPAM (Runtime)
+* *AuditDB.sql*: SQL Scripts to inspect DB for audit messages (Audit)
+

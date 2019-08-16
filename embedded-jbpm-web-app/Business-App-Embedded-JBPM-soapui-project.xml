@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="51affabc-8b83-4bcc-9e09-db8af7949fee" activeEnvironment="Default" name="Business-App-Embedded-JBPM" resourceRoot="" soapui-version="5.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="25b6a20b-701e-4141-bd5f-9f371bdf1ff5" wsaVersion="NONE" name="JBPMExposedOpsServiceSoapBinding" type="wsdl" bindingName="{urn://jbpmexposedops/JBPMExposedOps}JBPMExposedOpsServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://127.0.0.1:8080/business-app-jbpm-ws/JBPMExposedOpsService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://127.0.0.1:8080/business-app-jbpm-ws/JBPMExposedOpsService?wsdl"><con:part><con:url>http://127.0.0.1:8080/business-app-jbpm-ws/JBPMExposedOpsService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="JBPMExposedOpsService" targetNamespace="urn://jbpmexposedops/JBPMExposedOps" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn://jbpmexposedops/JBPMExposedOps" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="urn://helloworld/HelloWorld">
+  <wsdl:import location="http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService?wsdl=JBPMExposedOpsService.wsdl" namespace="urn://helloworld/HelloWorld"></wsdl:import>
+  <wsdl:binding name="JBPMExposedOpsServiceSoapBinding" type="ns1:JBPMExposedOpsService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="completeTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="completeTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="completeTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="claimCompleteTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="claimCompleteTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="claimCompleteTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="startNewBusinessProcess">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="startNewBusinessProcess">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="startNewBusinessProcessResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="claimTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="claimTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="claimTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="JBPMExposedOpsService">
+    <wsdl:port binding="tns:JBPMExposedOpsServiceSoapBinding" name="JBPMExposedOps">
+      <soap:address location="http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService?wsdl=JBPMExposedOpsService.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="JBPMExposedOpsService" targetNamespace="urn://helloworld/HelloWorld" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="urn://helloworld/HelloWorld">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="urn://helloworld/HelloWorld" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn://helloworld/HelloWorld">
+      <xs:element name="claimCompleteTask" type="tns:claimCompleteTask"/>
+      <xs:element name="claimCompleteTaskResponse" type="tns:claimCompleteTaskResponse"/>
+      <xs:element name="claimTask" type="tns:claimTask"/>
+      <xs:element name="claimTaskResponse" type="tns:claimTaskResponse"/>
+      <xs:element name="completeTask" type="tns:completeTask"/>
+      <xs:element name="completeTaskResponse" type="tns:completeTaskResponse"/>
+      <xs:element name="startNewBusinessProcess" type="tns:startNewBusinessProcess"/>
+      <xs:element name="startNewBusinessProcessResponse" type="tns:startNewBusinessProcessResponse"/>
+      <xs:complexType name="completeTask">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="deploymentId" type="xs:string"/>
+          <xs:element minOccurs="0" name="TaskDetails" type="tns:taskActionDetails"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="taskActionDetails">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="deploymentId" type="xs:string"/>
+          <xs:element minOccurs="0" name="groups" type="xs:string"/>
+          <xs:element name="taskId" type="xs:long"/>
+          <xs:element minOccurs="0" name="userId" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="completeTaskResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="claimCompleteTask">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="deploymentId" type="xs:string"/>
+          <xs:element minOccurs="0" name="TaskDetails" type="tns:taskActionDetails"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="claimCompleteTaskResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="startNewBusinessProcess">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="KjarName" type="xs:string"/>
+          <xs:element minOccurs="0" name="processId" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="startNewBusinessProcessResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="claimTask">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="deploymentId" type="xs:string"/>
+          <xs:element minOccurs="0" name="TaskDetails" type="tns:taskActionDetails"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="claimTaskResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="completeTask">
+    <wsdl:part element="ns1:completeTask" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="claimCompleteTask">
+    <wsdl:part element="ns1:claimCompleteTask" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="startNewBusinessProcess">
+    <wsdl:part element="ns1:startNewBusinessProcess" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="claimCompleteTaskResponse">
+    <wsdl:part element="ns1:claimCompleteTaskResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="claimTask">
+    <wsdl:part element="ns1:claimTask" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="completeTaskResponse">
+    <wsdl:part element="ns1:completeTaskResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="claimTaskResponse">
+    <wsdl:part element="ns1:claimTaskResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="startNewBusinessProcessResponse">
+    <wsdl:part element="ns1:startNewBusinessProcessResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="JBPMExposedOpsService">
+    <wsdl:operation name="completeTask">
+      <wsdl:input message="ns1:completeTask" name="completeTask"></wsdl:input>
+      <wsdl:output message="ns1:completeTaskResponse" name="completeTaskResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="claimCompleteTask">
+      <wsdl:input message="ns1:claimCompleteTask" name="claimCompleteTask"></wsdl:input>
+      <wsdl:output message="ns1:claimCompleteTaskResponse" name="claimCompleteTaskResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="startNewBusinessProcess">
+      <wsdl:input message="ns1:startNewBusinessProcess" name="startNewBusinessProcess"></wsdl:input>
+      <wsdl:output message="ns1:startNewBusinessProcessResponse" name="startNewBusinessProcessResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="claimTask">
+      <wsdl:input message="ns1:claimTask" name="claimTask"></wsdl:input>
+      <wsdl:output message="ns1:claimTaskResponse" name="claimTaskResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint></con:endpoints><con:operation id="3b0ad459-2faf-4029-a4c4-417307e7e433" isOneWay="false" action="" name="claimCompleteTask" bindingOperationName="claimCompleteTask" type="Request-Response" outputName="claimCompleteTaskResponse" inputName="claimCompleteTask" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="cce7b96e-f1e2-467f-9f23-739fa98b2f82" name="claimCompleteTask"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="urn://helloworld/HelloWorld">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:claimCompleteTask>
+         <!--Optional:-->
+         <deploymentId>com.redhat:test-business-project:3.1.0</deploymentId>
+         <!--Optional:-->
+         <TaskDetails>
+            <!--Optional:-->
+            <deploymentId>?</deploymentId>
+            <!--Optional:-->
+            <groups>redhat</groups>
+            <taskId>94</taskId>
+            <!--Optional:-->
+            <userId>jonathan</userId>
+         </TaskDetails>
+      </hel:claimCompleteTask>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn://jbpmexposedops/JBPMExposedOps/JBPMExposedOpsService/claimCompleteTask"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="588ab652-227e-4bf1-8c1c-a2884cfad1bc" isOneWay="false" action="" name="claimTask" bindingOperationName="claimTask" type="Request-Response" outputName="claimTaskResponse" inputName="claimTask" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="c6422548-542b-4906-8b40-5c083dbee5a7" name="claimTask"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="urn://helloworld/HelloWorld">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:claimTask>
+         <!--Optional:-->
+         <deploymentId>com.redhat:test-business-project:3.2.0</deploymentId>
+         <!--Optional:-->
+         <TaskDetails>
+            <!--Optional:-->
+            <deploymentId>?</deploymentId>
+            <!--Optional:-->
+            <groups>redhat</groups>
+            <taskId>83</taskId>
+            <!--Optional:-->
+            <userId>stelios</userId>
+         </TaskDetails>
+      </hel:claimTask>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn://jbpmexposedops/JBPMExposedOps/JBPMExposedOpsService/claimTask"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="6008a52e-ec80-4343-82c1-b77a8280e709" isOneWay="false" action="" name="completeTask" bindingOperationName="completeTask" type="Request-Response" outputName="completeTaskResponse" inputName="completeTask" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="80bce04d-07a1-4b00-b264-d9601c4d26b2" name="CompleteTask"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="urn://helloworld/HelloWorld">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:completeTask>
+         <!--Optional:-->
+         <deploymentId>com.redhat:test-business-project:3.1.0</deploymentId>
+         <!--Optional:-->
+         <TaskDetails>
+            <!--Optional:-->
+            <deploymentId>?</deploymentId>
+            <!--Optional:-->
+            <groups>redhat</groups>
+            <taskId>83</taskId>
+            <!--Optional:-->
+            <userId>stelios</userId>
+         </TaskDetails>
+      </hel:completeTask>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn://jbpmexposedops/JBPMExposedOps/JBPMExposedOpsService/completeTask"/><con:wsrmConfig version="1.2"/></con:call><con:call id="8762b6f3-ff49-4670-ba08-00e980416d8e" name="CT-skeleton-tests-kjar-1.human-task-process"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="urn://helloworld/HelloWorld">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:completeTask>
+         <!--Optional:-->
+         <deploymentId>com.redhat:test-business-project:5.6.0</deploymentId>
+         <!--Optional:-->
+         <TaskDetails>
+            <!--Optional:-->
+            <deploymentId>?</deploymentId>
+            <!--Optional:-->
+            <groups>redhat</groups>
+            <taskId>146</taskId>
+            <!--Optional:-->
+            <userId>stelios</userId>
+         </TaskDetails>
+      </hel:completeTask>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn://jbpmexposedops/JBPMExposedOps/JBPMExposedOpsService/completeTask"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="c544a6a1-7a6c-4156-8d64-3831061e82c8" isOneWay="false" action="" name="startNewBusinessProcess" bindingOperationName="startNewBusinessProcess" type="Request-Response" outputName="startNewBusinessProcessResponse" inputName="startNewBusinessProcess" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="3ec25528-2b75-48bd-9247-1bf5f3b0e6e3" name="STRT-test-business-project.human-task-process"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="urn://helloworld/HelloWorld">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:startNewBusinessProcess>
+         <!--Optional:-->
+         <KjarName>com.redhat:test-business-project:3.1.0</KjarName>
+         <!--Optional:-->
+         <processId>test-business-project.human-task-process</processId>
+      </hel:startNewBusinessProcess>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn://jbpmexposedops/JBPMExposedOps/JBPMExposedOpsService/startNewBusinessProcess"/><con:wsrmConfig version="1.2"/></con:call><con:call id="a596e194-aea4-4441-bb3f-775b0fedf573" name="STRT-skeleton-tests-kjar-1.UserValidation"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="urn://helloworld/HelloWorld">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:startNewBusinessProcess>
+         <!--Optional:-->
+         <KjarName>fr.cnamts:skeleton-tests-kjar-1:1.2.0-SNAPSHOT</KjarName>
+         <!--Optional:-->
+         <processId>skeleton-tests-kjar-1.UserValidation</processId>
+      </hel:startNewBusinessProcess>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn://jbpmexposedops/JBPMExposedOps/JBPMExposedOpsService/startNewBusinessProcess"/><con:wsrmConfig version="1.2"/></con:call><con:call id="fe2d0d91-8bbd-4f6e-b93e-4f386f6c4018" name="STRT-skeleton-tests-kjar-1.human-task-process"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="urn://helloworld/HelloWorld">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:startNewBusinessProcess>
+         <!--Optional:-->
+         <KjarName>fr.cnamts:skeleton-tests-kjar-1:5.5.0-SNAPSHOT</KjarName>
+         <!--Optional:-->
+         <processId>skeleton-tests-kjar-1.HumanUserValidation</processId>
+      </hel:startNewBusinessProcess>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn://jbpmexposedops/JBPMExposedOps/JBPMExposedOpsService/startNewBusinessProcess"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="070de702-5aed-4da1-a573-9b87e7353280" name="JBPMExposedOpsServiceSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="d6e50524-2f62-4a84-8ae8-12d352b67ecc" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="claimCompleteTask TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="d0fe0333-8712-45d8-8999-75f11a7bbaef" name="claimCompleteTask"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>JBPMExposedOpsServiceSoapBinding</con:interface><con:operation>claimCompleteTask</con:operation><con:request name="claimCompleteTask" id="834743aa-244a-419d-b353-e81a064e598c"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="urn://helloworld/HelloWorld">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:claimCompleteTask>
+         <!--Optional:-->
+         <deploymentId>?</deploymentId>
+         <!--Optional:-->
+         <TaskDetails>
+            <!--Optional:-->
+            <deploymentId>?</deploymentId>
+            <!--Optional:-->
+            <groups>?</groups>
+            <taskId>?</taskId>
+            <!--Optional:-->
+            <userId>?</userId>
+         </TaskDetails>
+      </hel:claimCompleteTask>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="urn://jbpmexposedops/JBPMExposedOps/JBPMExposedOpsService/claimCompleteTask"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="6cd8d290-25d0-4944-9a2f-02933d7420f9" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="claimTask TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="c27fcae6-8bcc-44c7-b33b-6be7b8c4b3a0" name="claimTask"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>JBPMExposedOpsServiceSoapBinding</con:interface><con:operation>claimTask</con:operation><con:request name="claimTask" id="9b12b464-da39-4db6-9fdd-b61cdff08acd"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="urn://helloworld/HelloWorld">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:claimTask>
+         <!--Optional:-->
+         <deploymentId>?</deploymentId>
+         <!--Optional:-->
+         <TaskDetails>
+            <!--Optional:-->
+            <deploymentId>?</deploymentId>
+            <!--Optional:-->
+            <groups>?</groups>
+            <taskId>?</taskId>
+            <!--Optional:-->
+            <userId>?</userId>
+         </TaskDetails>
+      </hel:claimTask>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="urn://jbpmexposedops/JBPMExposedOps/JBPMExposedOpsService/claimTask"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="e39447d2-96fc-439e-8b12-eb10aba986a7" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="completeTask TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="43c72afe-5f6e-4a5c-92b4-bf88ce458a66" name="completeTask"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>JBPMExposedOpsServiceSoapBinding</con:interface><con:operation>completeTask</con:operation><con:request name="completeTask" id="58c39162-dba5-45a4-9309-87644fde1f08"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="urn://helloworld/HelloWorld">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:completeTask>
+         <!--Optional:-->
+         <deploymentId>?</deploymentId>
+         <!--Optional:-->
+         <TaskDetails>
+            <!--Optional:-->
+            <deploymentId>?</deploymentId>
+            <!--Optional:-->
+            <groups>?</groups>
+            <taskId>?</taskId>
+            <!--Optional:-->
+            <userId>?</userId>
+         </TaskDetails>
+      </hel:completeTask>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="urn://jbpmexposedops/JBPMExposedOps/JBPMExposedOpsService/completeTask"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="573209d4-8775-4ed6-9531-8a0ca611e5c7" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="startNewBusinessProcess TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="1648d405-e43c-46d4-90c2-f0d47f289656" name="startNewBusinessProcess"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>JBPMExposedOpsServiceSoapBinding</con:interface><con:operation>startNewBusinessProcess</con:operation><con:request name="startNewBusinessProcess" id="a3559194-afd4-4570-a4e3-beb7b498b3a8"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8480/business-app-jbpm-ws/JBPMExposedOpsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="urn://helloworld/HelloWorld">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <hel:startNewBusinessProcess>
+         <!--Optional:-->
+         <KjarName>com.redhat:test-business-project:3.2.0</KjarName>
+         <!--Optional:-->
+         <processId>test-business-project.human-task-process</processId>
+      </hel:startNewBusinessProcess>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="urn://jbpmexposedops/JBPMExposedOps/JBPMExposedOpsService/startNewBusinessProcess" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

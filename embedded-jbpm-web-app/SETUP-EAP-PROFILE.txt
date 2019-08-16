@@ -1,0 +1,187 @@
+# Here to put CLI commands to Create necessary MAESTRO Profile/Server EAP Configs
+
+
+################################################
+#
+# PREPARE DEV ENVIRONMENT for MAESTRO APP
+#
+################################################
+
+# CONFIGURE DATASOURCES & DRIVERS
+# ===============================
+# see https://access.redhat.com/documentation/en-us/jboss_enterprise_application_platform/6/html/administration_and_configuration_guide/datasource_extensions1
+
+# pre-reqs: In JBOSS_HOME/modules there must be 2 driver installations
+#           ORACLE DRIVER MODULE ./modules/system/layers/base/com/oracle/main/
+#							 			module.xml
+#										ojdbc6.jar
+#           POSTGRES DRIVER MODULE ./modules/system/layers/base/com/org/postgresql/main/
+#										module.xml
+#										postgresql-42.2.6.jar
+
+# JBPM TIMERS (G1) DATASOURCE (ORACLE) required for QUARTZ
+# ------------------------------------------------------
+
+#batch
+#xa-data-source --profile=maestro-app-full add --name=XAMaestroRhpamTimersDS --xa-datasource-properties={"URL"=>"jdbc:oracle:thin:@55.10.124.153:3501:ooy27e10"} --driver-name=oracle --jndi-name="java:jboss/XAMaestroRhpamTimersDS" --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.oracle.OracleValidConnectionChecker --validate-on-match=true --background-validation=true --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions..oracle.OracleExceptionSorter --min-pool-size=10 --max-pool-size=10 --enabled=true --pool-prefill=true --user-name=BPMS --password=BPMS --xa-datasource-class=oracle.jdbc.xa.client.OracleXADataSource
+#run-batch
+#/server-group=maestro-group:reload-servers()
+
+
+# JBPM Runtime (G1) DATASOURCE (ORACLE)
+# -----------------------------
+
+batch
+xa-data-source --profile=maestro-app-full add --name=XAMaestroRhpamDS --xa-datasource-properties={"URL"=>"jdbc:oracle:thin:@55.10.124.153:3501:ooy27e10"} --driver-name=oracle --jndi-name="java:jboss/XAMaestroRhpamDS" --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.oracle.OracleValidConnectionChecker --validate-on-match=true --background-validation=true --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions..oracle.OracleExceptionSorter --min-pool-size=10 --max-pool-size=10 --enabled=true --pool-prefill=true --user-name=BPMS --password=BPMS --xa-datasource-class=oracle.jdbc.xa.client.OracleXADataSource
+run-batch
+/server-group=maestro-group:reload-servers()
+
+
+# MAESTRO APP (G2) DATASOURCE (POSTGRES)
+# ------------------------------
+
+batch
+xa-data-source --profile=maestro-app-full add --name=XAMaestroDS --xa-datasource-properties={"ServerName"=>"55.15.0.206","DatabaseName"=>"wkfl","PortNumber"=>"5435"} --driver-name=postgresql --jndi-name="java:jboss/XAMaestroDS" --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker --validate-on-match=true --background-validation=true --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter --min-pool-size=10 --max-pool-size=10 --enabled=true --pool-prefill=true --user-name=wkfl --password=wkfl
+run-batch
+/server-group=maestro-group:reload-servers()
+
+
+# MAESTRO APP AUDIT (G3) DATASOURCE  (POSTGRES)
+# ----------------------------------
+
+batch
+xa-data-source --profile=maestro-app-full add --name=XAMaestroG3DS --xa-datasource-properties={"ServerName"=>"55.15.0.206","DatabaseName"=>"wkfl","PortNumber"=>"5435"} --driver-name=postgresql --jndi-name="java:jboss/XAMaestroG3DS" --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker --validate-on-match=true --background-validation=true --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter --min-pool-size=10 --max-pool-size=10 --enabled=true --pool-prefill=true --user-name=wkfl --password=wkfl
+run-batch
+/server-group=maestro-group:reload-servers()
+
+
+# CONFIGURE TIMERS
+===================
+
+# QUARTZ
+-----------
+# Not apply Using EJB Timers first otherwise use following in server creation
+# /host=m001bpmsd01/server-config=maestro-node-1/system-property=org.quartz.properties:add(value="/redhat/rhpam-7.2.GA/cnamts-domain/configuration/quartz-definition.properties")
+
+# EJB TIMERS
+-----------
+batch
+/profile=maestro-app-full/subsystem=ejb3/service=timer-service/database-data-store=db-store:add(datasource-jndi-name=jboss/XAMaestroRhpamDS, database=oracle, refresh-interval=5000)
+/profile=maestro-app-full/subsystem=ejb3/service=timer-service:write-attribute(name=default-data-store, value=db-store)
+run-batch
+/server-group=maestro-group:reload-servers()
+
+
+
+# CONFIGURE MESSAGING
+# ===============================
+
+# Configuring Messaging Queues in EAP maestro-full profile (instead of bpms-jms.xml in wkflj)
+# -------------------------------------------------------------------------------------------
+batch
+jms-queue add --profile=maestro-app-full --queue-address=KIE.TASK.ALL --durable=true --entries=["java:/jms/queue/KIE.TASK.ALL","java:jboss/exported/jms/queue/KIE.TASK"]
+jms-queue add --profile=maestro-app-full --queue-address=KIE.AUDIT.ALL --durable=true --entries=["java:/jms/queue/KIE.AUDIT.ALL","java:jboss/exported/jms/queue/KIE.AUDIT"]
+jms-queue add --profile=maestro-app-full --queue-address=KIE.RESPONE.ALL --durable=true --entries=["java:/jms/queue/KIE.RESPONE.ALL","java:jboss/exported/jms/queue/KIE.RESPONE"]
+jms-queue add --profile=maestro-app-full --queue-address=KIE.SESSION.ALL --durable=true --entries=["java:/jms/queue/KIE.SESSION.ALL","java:jboss/exported/jms/queue/KIE.SESSION"]
+run-batch
+
+# Configuring the KIE.AUDT Address on maestro-full profile for BETTER performance
+# --------------------------------------------------------------------------------
+# Read about All properties	https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.2/html-single/configuring_messaging/index#reference_material
+# Read (max-delivery-attempts) 	https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.2/html-single/configuring_messaging/index#configure_delayed_redelivery
+# Read (page-size-bytes &  address-full-policy )		https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.2/html-single/configuring_messaging/index#paging_mode
+
+
+# MAKING QUEUE FAIL ON ALL MESSAGES (Txs test)
+# ----------------------------------------------
+# /profile=maestro-app-full/subsystem=messaging-activemq/server=default/address-setting=jms.queue.KIE.AUDIT.#:add(address-full-policy=FAIL,dead-letter-address=jms.queue.DLQ,expiry-address=jms.queue.ExpiryQueue, max-size-bytes=1,page-size-bytes=1,message-counter-history-day-limit=10,max-delivery-attempts=10)
+# REMOVE exception causing
+# /profile=maestro-app-full/subsystem=messaging-activemq/server=default/address-setting=jms.queue.KIE.AUDIT.#:remove()
+
+
+# CREATE NEW MAESTRO SERVER
+# ==========================
+pre-reqs: 
+	- XAMaestroRhpamTimersDS (if Quartz used I have used EJB Timers)
+	- /redhat/rhpam-7.2.GA/cnamts-domain/configuration/quartz-definition.properties (if Quartz used I have used EJB Timers)
+
+batch
+/host=m001bpmsd01/server-config=maestro-node-2:add(group=maestro-group,socket-binding-port-offset=7, auto-start=false)
+/host=m001bpmsd01/server-config=maestro-node-2/system-property=jboss.tx.node.id:add(value="maestro-node-2", boot-time="true")
+/host=m001bpmsd01/server-config=maestro-node-2/system-property=org.jbpm.ejb.timer.tx:add(value="true", boot-time="true")
+/host=m001bpmsd01/server-config=maestro-node-2/system-property=kie.maven.settings.custom:add(value="/redhat/rhpam-7.2.GA/cnamts-domain/configuration/settings.xml")
+# Not apply if not Using Quart first otherwise use following in server creation
+# /host=m001bpmsd01/server-config=maestro-node-2/system-property=org.quartz.properties:add(value="/redhat/rhpam-7.2.GA/cnamts-domain/configuration/quartz-definition.properties")
+run-batch
+/host=m001bpmsd01/server-config=maestro-node-2:start()	
+
+
+/host=m001bpmsd01/server-config=maestro-node-1/system-property=org.jbpm.ejb.timer.tx:add(value="true", boot-time="true")
+
+# Optional properties disabling dmn/optaplanner
+# -----------------------------------------------
+/host=m001bpmsd01/server-config=maestro-node-1/system-property=org.kie.dmn.server.ext.disabled:add(value="true")
+/host=m001bpmsd01/server-config=maestro-node-1/system-property=org.optaplanner.server.ext.disabled:add(value="=true")
+
+run-batch
+
+# DEPLOY APPs to MAESTRO GROUP
+# ==========================
+via console for now or ssh war files and then 
+/redhat/rhpam-7.2.GA/bin/jboss-cli.sh --controller=55.10.114.25:8091 --user=admin --password=admin123! --connect "deploy --server-group=<NAME> --URL=<PATH TO WAR>"
+
+
+SEE DEPLOYMENTS STATUS
+========================
+$ /redhat/rhpam-7.2.GA/bin/jboss-cli.sh --controller=55.10.114.25:8091 --user=admin --password=admin123! --connect "deployment info --server-group=maestro-group"
+NAME                                  RUNTIME-NAME                          STATE
+JMSBrowser.war                        JMSBrowser.war                        enabled
+audit-jbpm-jms-receiver-war-1.0.0.war audit-jbpm-jms-receiver-war-1.0.0.war not added
+business-central.war                  business-central.war                  not added
+helloworld-mdb.war                    helloworld-mdb.war                    not added
+kie-deployment-descriptor-PAFT_WF.xml kie-deployment-descriptor-PAFT_WF.xml enabled
+kie-server.war                        kie-server.war                        not added
+wkflj-0.1.0-SNAPSHOT.war              wkflj-0.1.0-SNAPSHOT.war              enabled
+
+
+
+
+###################################################
+#
+# PREPARE DEV ENVIRONMENT for BUSINESS CENTRAL APP
+#
+###################################################
+
+SEE DEPLOYMENTS STATUS
+========================
+$ /redhat/rhpam-7.2.GA/bin/jboss-cli.sh --controller=55.10.114.25:8091 --user=admin --password=admin123! --connect "deployment info --server-group=business-central-group"
+NAME                                  RUNTIME-NAME                          STATE
+JMSBrowser.war                        JMSBrowser.war                        not added
+audit-jbpm-jms-receiver-war-1.0.0.war audit-jbpm-jms-receiver-war-1.0.0.war not added
+business-central.war                  business-central.war                  enabled
+helloworld-mdb.war                    helloworld-mdb.war                    not added
+kie-server.war                        kie-server.war                        not added
+wkflj-0.1.0-SNAPSHOT.war              wkflj-0.1.0-SNAPSHOT.war              not added
+
+
+
+
+###################################################
+#
+# PREPARE DEV ENVIRONMENT for KIE SERVER APP
+#
+###################################################
+
+
+SEE DEPLOYMENTS STATUS
+========================
+
+$ /redhat/rhpam-7.2.GA/bin/jboss-cli.sh --controller=55.10.114.25:8091 --user=admin --password=admin123! --connect "deployment info --server-group=kie-server-group"
+NAME                                  RUNTIME-NAME                          STATE
+JMSBrowser.war                        JMSBrowser.war                        not added
+audit-jbpm-jms-receiver-war-1.0.0.war audit-jbpm-jms-receiver-war-1.0.0.war not added
+business-central.war                  business-central.war                  not added
+helloworld-mdb.war                    helloworld-mdb.war                    not added
+kie-deployment-descriptor-PAFT_WF.xml kie-deployment-descriptor-PAFT_WF.xml not added
+kie-server.war                        kie-server.war                        enabled
+wkflj-0.1.0-SNAPSHOT.war              wkflj-0.1.0-SNAPSHOT.war              not added

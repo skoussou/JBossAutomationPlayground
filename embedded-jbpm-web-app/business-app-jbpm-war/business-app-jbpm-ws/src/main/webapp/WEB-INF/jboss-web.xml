@@ -1,0 +1,5 @@
+<jboss-web>
+
+
+    <context-root>business-app-jbpm-ws</context-root>
+</jboss-web>
