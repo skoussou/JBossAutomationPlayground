@@ -40,12 +40,12 @@ OCP:         servers:
 
 
 
-* Test metrics working by accessing 'KIESERVER-ROUTE/services/rest/metrics
+* Test metrics working by calling the following to create processes and accessing 'KIESERVER-ROUTE/services/rest/metrics
 ```bash
 curl -X POST "http://enable-prometheus-kieserver-http-dev-rhpam-operator.apps.cluster-instabul-9983.instabul-9983.example.opentlc.com/services/rest/server/containers/evaluation_1.0.0-SNAPSHOT/processes/evaluation/instances" -H  "accept: application/json" -H  "content-type: application/json" -d "{    \"employee\": \"employee-2\",    \"reason\": \"some-reason\"}"
 ```
 
-  * also in a loop (see [loop-process-creation.sh](./scripts/loop-process-creation.sh))
+  * Also generate processes in a loop (see [loop-process-creation.sh](./scripts/loop-process-creation.sh))
 
 ```bash
 #!/bin/bash
@@ -69,15 +69,21 @@ see Prometheus [Installation & Configuration to pull RHPAM Metrics](./Install-Pr
 
 ### Install Grafana
 
+
+* Install Grafana App
+```bash
 oc new-app grafana/grafana && oc expose svc/grafana
+```
 
-Verify Grafana is up and running:
+* Verify Grafana is up and running:
 
+```bash
 oc rollout status -w dc/grafana
+```
 
 You should see replication controller "grafana-1" successfully rolled out
 
-Open Grafana Dashboard
+* Open Grafana Dashboard (via ROUTE)
 Click on this link to open the Grafana Dashboard in your browser, and login using the default credentails:
 
 Username: admin
@@ -85,20 +91,18 @@ Password: admin
 Grafana UI
 At the password change prompt, use any password you wish.
 
-Add Prometheus as a data source
+* Add Prometheus as a data source
 You’ll land on the Data Source screen. Click Add Data Source, and select Prometheus as the Data Source Type.
 
-In the URL box, type http://prometheus:9090 (this is the hostname and port of our running Prometheus in our namespace):
+  * Connect promethes with grafana
+   * In the URL box, type http://prometheus:9090 (this is the hostname and port of our running Prometheus in our namespace):
+   * SVC (Not working) http://prometheus.dev-rhpam-operator.svc.cluster.local)
+   * ROUTE (Working) http://prometheus-dev-rhpam-operator.apps.cluster-instabul-9983.instabul-9983.example.opentlc.com
 
-Connect promethes with grafana (
-- SVC (Not working) http://prometheus.dev-rhpam-operator.svc.cluster.local)
-- ROUTE (Working) http://prometheus-dev-rhpam-operator.apps.cluster-instabul-9983.instabul-9983.example.opentlc.com
 
-
-Grafana UI
+* Grafana UI
 Click Save and Test. You should see:
 
-Grafana UI
 
 ### Create Dashboards
 
