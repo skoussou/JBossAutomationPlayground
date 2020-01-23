@@ -74,7 +74,7 @@ then see
 
 ### Create Traffic for the metrics
 
-![RHPAM Dashboard](/images/prometheus-grafana-rhpam-monitoring.png)
+![RHPAM Dashboard](./images/prometheus-grafana-rhpam-monitoring.png)
 
 
 
