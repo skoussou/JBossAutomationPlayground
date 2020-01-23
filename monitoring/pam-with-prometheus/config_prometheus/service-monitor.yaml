@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: rhpam-service-monitor
+  labels:
+    team: frontend
+spec:
+  selector:
+    matchLabels:
+      metrics: rhpam
+  endpoints:
+    - port: web
+      path: /services/rest/metrics
+      basicAuth:
+        password:
+          name: kie-server-prometheus-secret
+          key: password
+        username:
+          name: kie-server-prometheus-secret
+          key: username
