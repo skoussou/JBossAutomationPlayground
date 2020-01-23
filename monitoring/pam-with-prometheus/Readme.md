@@ -11,16 +11,16 @@ Inspired by documentation managing_and_monitoring_process_server https://access.
 ## Setup PAM for DEv & Runtime
 
 * Setup In OCP
-** Operator based installation [documentation managing_and_monitoring_process_server](https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single) (Ensure 'kieserver' POD has 
-** non Operator based //github.com/jbossdemocentral/rhpam7-install-demo
+  * Operator based installation [documentation managing_and_monitoring_process_server](https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single) (Ensure 'kieserver' POD has 
+  * non Operator based //github.com/jbossdemocentral/rhpam7-install-demo
  
 * On Prem
-** installer //github.com/jbossdemocentral/rhpam7-install-demo
+  * installer //github.com/jbossdemocentral/rhpam7-install-demo
 
 * Import Evaluation_Process Business Project in BC 
-*** Import Examples --> Evaluations
-*** Update 'evaluations' Business Process all tasks to have as GROUP 'kie-server'
-*** deploy on KIE Server
+  * Import Examples --> Evaluations
+  * Update 'evaluations' Business Process all tasks to have as GROUP 'kie-server'
+  * deploy on KIE Server
 
 * Ensure the following property is configured (dependent on environment)
 
