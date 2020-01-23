@@ -1,24 +1,43 @@
 # Visualize & Monitor RH PAM Project Stats with Prometheus & Grafana
 
 
-Inspired by documentation at https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single/managing_and_monitoring_process_server/index#prometheus-monitoring-con_execution-server
+Inspired by documentation managing_and_monitoring_process_server https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single/managing_and_monitoring_process_server/index#prometheus-monitoring-con_execution-server
 
-also locally in repo available Red_Hat_Process_Automation_Manager-7.6-Managing_and_monitoring_Process_Server-en-US.pdf
+* Inspired by [documentation managing_and_monitoring_process_server](https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single/managing_and_monitoring_process_server/index#prometheus-monitoring-con_execution-server)
+* Also locally in repo available in this repository [Red_Hat_Process_Automation_Manager-7.6-Managing_and_monitoring_Process_Server-en-US.pdf](.Red_Hat_Process_Automation_Manager-7.6-Managing_and_monitoring_Process_Server-en-US.pd)
+
+
 
 ## Setup PAM for DEv & Runtime
 
-- Setup In OCP
+* Setup In OCP
+** Operator based installation [documentation managing_and_monitoring_process_server](https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single) (Ensure 'kieserver' POD has 
+** non Operator based //github.com/jbossdemocentral/rhpam7-install-demo
+ 
+* On Prem
+** installer //github.com/jbossdemocentral/rhpam7-install-demo
 
-  Operator based: https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single/deploying_a_red_hat_process_automation_manager_environment_on_red_hat_openshift_container_platform_using_operators/index
+* Import Evaluation_Process Business Project in BC 
+*** Import Examples --> Evaluations
+*** Update 'evaluations' Business Process all tasks to have as GROUP 'kie-server'
+*** deploy on KIE Server
 
-- On Prem
-installer
+* Ensure the following property is configured (dependent on environment)
 
-- Import Evaluation_Process in BC 
 
-   one of the existing example
-   update all tasks to have as GROUP 'kie-server'
-   deploy on KIE Server
+```bash
+vim ./org.drools-droolsjbpm-integration-7.26.0.Final/kie-server-parent/kie-server-services/kie-server-services-prometheus/src/main/java/org/kie/server/services/prometheus
+
+SPRINGBOOT
+kieserver.prometheus.enabled=true (application.properties)
+
+KIE Server
+NON-OCP: org.kie.prometheus.server.ext.disabled=false 
+OCP:         servers:
+    - env:
+      - name: PROMETHEUS_SERVER_EXT_DISABLED
+        value: "false"
+```
 
 
 ## Setup prometheus to monitor KIE Server(s)
