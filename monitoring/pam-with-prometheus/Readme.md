@@ -11,7 +11,7 @@ Inspired by documentation managing_and_monitoring_process_server https://access.
 ## Setup PAM for DEv & Runtime
 
 * Setup In OCP
-  * Operator based installation [documentation managing_and_monitoring_process_server](https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single) (Ensure 'kieserver' POD has 
+  * Operator based installation [documentation managing_and_monitoring_process_server](https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single) 
   * non Operator based installer [installer](http://github.com/jbossdemocentral/rhpam7-install-demo)
  
 * On Prem
@@ -19,9 +19,8 @@ Inspired by documentation managing_and_monitoring_process_server https://access.
 
 * Import Evaluation_Process Business Project in BC 
   * Import Examples --> Evaluations
-  * Update 'evaluations' Business Process all tasks to have as GROUP 'kie-server'
+  * Update 'evaluations' Business Process all tasks to have as GROUP 'kie-server' and remove all other possible ownership (eg. ActorId or group)
   * deploy on KIE Server
-
 * Ensure the following property is configured (dependent on environment)
 
 
@@ -46,7 +45,7 @@ OCP:         servers:
 curl -X POST "http://enable-prometheus-kieserver-http-dev-rhpam-operator.apps.cluster-instabul-9983.instabul-9983.example.opentlc.com/services/rest/server/containers/evaluation_1.0.0-SNAPSHOT/processes/evaluation/instances" -H  "accept: application/json" -H  "content-type: application/json" -d "{    \"employee\": \"employee-2\",    \"reason\": \"some-reason\"}"
 ```
 
-  * also in a loop (see [loop-process-creation.sh](./scripts/loop-process-creation.sh)
+  * also in a loop (see [loop-process-creation.sh](./scripts/loop-process-creation.sh))
 
 ```bash
 #!/bin/bash
@@ -62,7 +61,7 @@ done
 
 ## Setup prometheus to monitor KIE Server(s)
 
-see Prometheus [Installation & Configuration to pull RHPAM Metrics](.Install-Prometheus.md)
+see Prometheus [Installation & Configuration to pull RHPAM Metrics](./Install-Prometheus.md)
 
 
 
