@@ -106,17 +106,22 @@ Click Save and Test. You should see:
 
 ### Create Dashboards
 
-see How-To-Monitor.md
-then see
-
+For more info on metrics to use see [How-To-Monitor.md](./How-To-Monitor.md) and Configuring Prometheus metrics monitoring for Process Server on Red Hat OpenShift Container Platform](https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single/managing_and_monitoring_process_server/index#prometheus-monitoring-ocp-proc_execution-server)
+then see for examples of dashboards
+```bash
 ├── ready-dashboards
 │   ├── RHPAM-Evaluations-Process&Monitoring-GrafanaDashBoard-API-Based-Templete.json
 │   └── RHPAM-Evaluations-Process&Monitoring-GrafanaDashBoard.json
-
+```
+![RHPAM Dashboard](./images/prometheus-grafana-rhpam-monitoring.png)
 
 ### Create Traffic for the metrics
 
-![RHPAM Dashboard](./images/prometheus-grafana-rhpam-monitoring.png)
+Note, you need to modify the script below to point to your KIE Server
+
+* Run first [./scripts/loop-process-creation.sh](./scripts/loop-process-creation.sh)
+* Monitor the dashboard for a little while before
+* Run the [./scripts/loop-claim-start-complete-tasks.sh](./scripts/loop-process-creation.sh) to claim/complete tasks
 
 
 
