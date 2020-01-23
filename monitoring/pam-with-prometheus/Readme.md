@@ -12,10 +12,10 @@ Inspired by documentation managing_and_monitoring_process_server https://access.
 
 * Setup In OCP
   * Operator based installation [documentation managing_and_monitoring_process_server](https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single) (Ensure 'kieserver' POD has 
-  * non Operator based //github.com/jbossdemocentral/rhpam7-install-demo
+  * non Operator based installer [installer](http://github.com/jbossdemocentral/rhpam7-install-demo)
  
 * On Prem
-  * installer //github.com/jbossdemocentral/rhpam7-install-demo
+  * [installer](http://github.com/jbossdemocentral/rhpam7-install-demo)
 
 * Import Evaluation_Process Business Project in BC 
   * Import Examples --> Evaluations
@@ -40,9 +40,29 @@ OCP:         servers:
 ```
 
 
+
+* Test metrics working by accessing 'KIESERVER-ROUTE/services/rest/metrics
+```bash
+curl -X POST "http://enable-prometheus-kieserver-http-dev-rhpam-operator.apps.cluster-instabul-9983.instabul-9983.example.opentlc.com/services/rest/server/containers/evaluation_1.0.0-SNAPSHOT/processes/evaluation/instances" -H  "accept: application/json" -H  "content-type: application/json" -d "{    \"employee\": \"employee-2\",    \"reason\": \"some-reason\"}"
+```
+
+  * also in a loop (see [loop-process-creation.sh](./scripts/loop-process-creation.sh)
+
+```bash
+#!/bin/bash
+for i in {1..5}
+do
+   echo "curl -u 'adminUser:RedHat'  -X POST "http://enable-prometheus-kieserver-http-dev-rhpam-operator.apps.cluster-instabul-9983.instabul-9983.example.opentlc.com/services/rest/server/containers/evaluation_1.0.0-SNAPSHOT/processes/evaluation/instances" -H  "accept: application/json" -H  "content-type: application/json" -d "{    \"employee\": \"employee-$i\",    \"reason\": \"some-reason\"}""
+
+   curl -u 'adminUser:RedHat' -X POST "http://enable-prometheus-kieserver-http-dev-rhpam-operator.apps.cluster-instabul-9983.instabul-9983.example.opentlc.com/services/rest/server/containers/evaluation_1.0.0-SNAPSHOT/processes/evaluation/instances" -H  "accept: application/json" -H  "content-type: application/json" -d "{    \"employee\": \"employee-$i\",    \"reason\": \"some-reason\"}"
+
+done
+```
+
+
 ## Setup prometheus to monitor KIE Server(s)
 
-see Install-Prometheus.md
+see Prometheus [Installation & Configuration to pull RHPAM Metrics](.Install-Prometheus.md)
 
 
 
