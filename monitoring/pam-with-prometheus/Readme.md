@@ -1,11 +1,11 @@
-= Visualize & Monitor RH PAM Project Stats with Prometheus & Grafana
+# Visualize & Monitor RH PAM Project Stats with Prometheus & Grafana
 
 
 Inspired by documentation at https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single/managing_and_monitoring_process_server/index#prometheus-monitoring-con_execution-server
 
 also locally in repo available Red_Hat_Process_Automation_Manager-7.6-Managing_and_monitoring_Process_Server-en-US.pdf
 
-== Setup PAM for DEv & Runtime
+## Setup PAM for DEv & Runtime
 
 - Setup In OCP
 
@@ -21,15 +21,15 @@ installer
    deploy on KIE Server
 
 
-== Setup prometheus to monitor KIE Server(s)
+## Setup prometheus to monitor KIE Server(s)
 
 see Install-Prometheus.md
 
 
 
-== Setup monitoring with GRafana
+## Setup monitoring with GRafana
 
-=== Install Grafana
+### Install Grafana
 
 oc new-app grafana/grafana && oc expose svc/grafana
 
@@ -62,7 +62,7 @@ Click Save and Test. You should see:
 
 Grafana UI
 
-=== Create Dashboards
+### Create Dashboards
 
 see How-To-Monitor.md
 then see
@@ -72,7 +72,7 @@ then see
 │   └── RHPAM-Evaluations-Process&Monitoring-GrafanaDashBoard.json
 
 
-== Create Traffic for the metrics
+### Create Traffic for the metrics
 
 ![RHPAM Dashboard](/images/prometheus-grafana-rhpam-monitoring.png)
 
