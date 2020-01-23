@@ -1,0 +1,355 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "panels": [
+    {
+      "datasource": null,
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "horizontal",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.5.3",
+      "targets": [
+        {
+          "expr": "kie_server_task_added_total{deployment_id=\"evaluation_2.0.0-SNAPSHOT\",process_id=\"evaluation\",task_name=\"HR Evaluation\",}",
+          "instant": true,
+          "legendFormat": "Openned Self-Evals",
+          "refId": "B"
+        },
+        {
+          "expr": "kie_server_task_completed_total{deployment_id=\"evaluation_2.0.0-SNAPSHOT\",process_id=\"evaluation\",task_name=\"HR Evaluation\",}",
+          "instant": true,
+          "legendFormat": "Completed Self-Evals",
+          "refId": "C"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Self-Eval Tasks Status",
+      "type": "gauge"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": null,
+      "gridPos": {
+        "h": 17,
+        "w": 4,
+        "x": 5,
+        "y": 0
+      },
+      "id": 6,
+      "links": [],
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "defaults": {
+            "mappings": [
+              {
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "max": 100,
+            "min": 0,
+            "nullValueMode": "connected",
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 500
+              },
+              {
+                "color": "#E24D42",
+                "value": 1500
+              },
+              {
+                "color": "#EF843C",
+                "value": 2000
+              }
+            ],
+            "unit": "none"
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "horizontal",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.5.3",
+      "targets": [
+        {
+          "expr": "kie_server_task_duration_seconds_count{deployment_id=\"evaluation_2.0.0-SNAPSHOT\",process_id=\"evaluation\",task_name=\"Self Evaluation\",}",
+          "legendFormat": "Time for Self Eval Task (secs)",
+          "refId": "A"
+        },
+        {
+          "expr": "kie_server_task_duration_seconds_count{deployment_id=\"evaluation_2.0.0-SNAPSHOT\",process_id=\"evaluation\",task_name=\"PM Evaluation\",}",
+          "legendFormat": "Time for PM Eval Task (secs)",
+          "refId": "B"
+        },
+        {
+          "expr": "kie_server_task_duration_seconds_count{deployment_id=\"evaluation_2.0.0-SNAPSHOT\",process_id=\"evaluation\",task_name=\"HR Evaluation\",}",
+          "legendFormat": "Time for HR Eval Task (secs)",
+          "refId": "C"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Task Execution Times",
+      "type": "gauge"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": null,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 10,
+        "y": 0
+      },
+      "id": 2,
+      "links": [],
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "defaults": {
+            "mappings": [
+              {
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "max": 100,
+            "min": 0,
+            "nullValueMode": "connected",
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ],
+            "unit": "none"
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "horizontal",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.5.3",
+      "targets": [
+        {
+          "expr": "kie_server_process_instance_running_total{container_id=\"evaluation_2.0.0-SNAPSHOT\",process_id=\"evaluation\",}",
+          "instant": true,
+          "legendFormat": "Started Evaluations",
+          "refId": "A"
+        },
+        {
+          "expr": "kie_server_process_instance_completed_total{container_id=\"evaluation_2.0.0-SNAPSHOT\",process_id=\"evaluation\",status=\"2\",}",
+          "instant": true,
+          "legendFormat": "Completed Evaluations",
+          "refId": "B"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Completed vs Running",
+      "type": "gauge"
+    },
+    {
+      "datasource": null,
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 0,
+        "y": 6
+      },
+      "id": 10,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.5.3",
+      "targets": [
+        {
+          "expr": "kie_server_task_added_total{deployment_id=\"evaluation_2.0.0-SNAPSHOT\",process_id=\"evaluation\",task_name=\"PM Evaluation\",}",
+          "legendFormat": "Openned PM Evals",
+          "refId": "A"
+        },
+        {
+          "expr": "kie_server_task_completed_total{deployment_id=\"evaluation_2.0.0-SNAPSHOT\",process_id=\"evaluation\",task_name=\"PM Evaluation\",}",
+          "legendFormat": "Completed PM Evals",
+          "refId": "B"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "PM Tasks Status",
+      "type": "gauge"
+    },
+    {
+      "datasource": null,
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 0,
+        "y": 11
+      },
+      "id": 8,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "6.5.3",
+      "targets": [
+        {
+          "expr": "kie_server_task_added_total{deployment_id=\"evaluation_2.0.0-SNAPSHOT\",process_id=\"evaluation\",task_name=\"HR Evaluation\",}",
+          "legendFormat": "Openned HR Evals",
+          "refId": "A"
+        },
+        {
+          "expr": "kie_server_task_completed_total{deployment_id=\"evaluation_2.0.0-SNAPSHOT\",process_id=\"evaluation\",task_name=\"HR Evaluation\",}",
+          "legendFormat": "Completed HR Evals",
+          "refId": "B"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "HR Evals Tasks",
+      "type": "gauge"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 21,
+  "style": "dark",
+  "tags": [
+    "RHPAM"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s"
+    ]
+  },
+  "timezone": "",
+  "title": "RHPAM Process & Task Monitoring",
+  "uid": "VSueEKyWk",
+  "version": 14
+}

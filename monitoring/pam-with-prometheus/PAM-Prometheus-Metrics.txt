@@ -1,0 +1,11 @@
+vim ./org.drools-droolsjbpm-integration-7.26.0.Final/kie-server-parent/kie-server-services/kie-server-services-prometheus/src/main/java/org/kie/server/services/prometheus
+
+SPRINGBOOT
+kieserver.prometheus.enabled=true (application.properties)
+
+KIE Server
+NON-OCP: org.kie.prometheus.server.ext.disabled=false 
+OCP:         servers:
+    - env:
+      - name: PROMETHEUS_SERVER_EXT_DISABLED
+        value: "false"
