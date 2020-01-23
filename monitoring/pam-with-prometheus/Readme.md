@@ -106,7 +106,7 @@ Click Save and Test. You should see:
 
 ### Create Dashboards
 
-For more info on metrics to use see [How-To-Monitor.md](./How-To-Monitor.md) and Configuring Prometheus metrics monitoring for Process Server on Red Hat OpenShift Container Platform](https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single/managing_and_monitoring_process_server/index#prometheus-monitoring-ocp-proc_execution-server)
+For more info on metrics to use see [How-To-Monitor.md](./How-To-Monitor.md) and [Configuring Prometheus metrics monitoring for Process Server on Red Hat OpenShift Container Platform](https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.6/html-single/managing_and_monitoring_process_server/index#prometheus-monitoring-ocp-proc_execution-server)
 then see for examples of dashboards
 ```bash
 ├── ready-dashboards
