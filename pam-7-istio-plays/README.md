@@ -84,9 +84,15 @@ eg.
 oc patch dc/gps-kieserver -p '{"spec":{"template":{"metadata":{"annotations":{"sidecar.istio.io/inject":"true"}}}}}' -n $APPS_NAMESPACE
 ```
 * Now for BC Route http://template-rhpam-bc-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com should work
-  * Test by calling: watch -n1 "curl -v template-rhpam-bc-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com/docs/"
+  * Test by calling: 
+```
+watch -n1 "curl -v template-rhpam-bc-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com/"
+```
 * Now for KIE Server (from template) http://template-rhpam-service-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com/docs/ should be accessible 
-  * Test by calling: watch -n1 "curl -v http://template-rhpam-service-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com/docs/"
+  * Test by calling: 
+```
+watch -n1 "curl -v http://template-rhpam-service-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com/docs/"
+```
 * The ISTIO Configs in __dev-pam__ namespace
 ```
 oc get gw
@@ -112,6 +118,9 @@ istio-ingressgateway                istio-ingressgateway-istio-system.apps.labs-
 template-bc-ingressgateway          template-rhpam-bc-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com                  istio-ingressgateway   http2                   None
 template-kieserver-ingressgateway   template-rhpam-service-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com             istio-ingressgateway   http2                   None
 ```
+* Below image showcaces KIALI's visualization on how the DEV KIE Server serving requests  for KJAR-A-1-0-0 via a sing K8s/ISTIO Service (dev-kie-server)
+![Routing to dev-kie-server services based single VirtualService Rule for it](./images/DEV-KIE-SERVER.png "Routing to dev-kie-server services based single VirtualService Rule for it")
+
 
 ## Setup KIE Server/KJARs with multiple versions
 
@@ -217,6 +226,11 @@ template-kieserver-ingressgateway   template-rhpam-service-dev-pam-istio-system.
 
 ### Configuring KIEContainers in ISTIO configured KIE Servers
 
+* WATCH POD LOGs for the following commands/tests
+```
+oc logs -f custom-kieserver-kjar-a-v110-2-ntv6j -c custom-kieserver-kjar-a-v110
+oc logs -f custom-kieserver-kjar-a-v110-b-1-ks64l -c custom-kieserver-kjar-a-v110-b
+```
 * Configuring a KIE Container to the correct KIE Server by Label Version
   * PUT KIEContainer to POD LABEL __version : kjar-a-1-1-0__
 ```
@@ -263,8 +277,23 @@ curl -X -H 'bizversion: version-kjar-a-110'  GET "http://rhpam-service-a-dev-pam
 ```
 curl -X DELETE -H 'bizversion: version-kjar-a-110' "http://rhpam-service-a-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com/services/rest/server/containers/evaluation" -H  "accept: application/json"
 ```
+  * START A PROCESS INSTANCE in one of the KIE Servers with LABEL __version : kjar-a-1-1-0__
+```
+$ curl -u 'executionUser:executionUser123' -X POST -H 'bizversion: version-kjar-a-110' "http://rhpam-service-a-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com/services/rest/server/containers/evaluation/processes/evaluation/instances" -H  "accept: application/json" -H  "content-type: application/json" -d "{}"
+1
 
+# ABOVE WENT TO POD custom-kieserver-kjar-a-v110-b
 
+[stkousso@stkousso RHPAM-and-ServiceMesh]$ curl -u 'executionUser:executionUser123' -X POST -H 'bizversion: version-kjar-a-110' "http://rhpam-service-a-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentl.com/services/rest/server/containers/evaluation/processes/evaluation/instances" -H  "accept: application/json" -H  "content-type: application/json" -d "{}"
+2
+
+# ABOVE WENT TO POD custom-kieserver-kjar-a-v110-b
+
+[stkousso@stkousso RHPAM-and-ServiceMesh]$ curl -u 'executionUser:executionUser123' -X POST -H 'bizversion: version-kjar-a-110' "http://rhpam-service-a-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentl.com/services/rest/server/containers/evaluation/processes/evaluation/instances" -H  "accept: application/json" -H  "content-type: application/json" -d "{}"
+
+# ABOVE WENT TO POD custom-kieserver-kjar-a-v110 (because using H2 in memory DB different Instance Version)
+
+```
 
 ### Possible Smart Routing with ISTIO
 
@@ -312,6 +341,7 @@ spec:
   * HOW agreggation of queries like Smart Router would do against ALL KIE Servers if they are not backed by the same DB
   * HOW multi version KIE Servers (ie. multiple versions of the same Business Logic/KJAR or even different KJARs with different versions to be catered by ISTIO routing)
   * containerId/Alias on URL to be combined with Label when doing specific wotk on Process/Task Instance
+    * Seeing tests on creating processes it looks possible so long as LABEL version is known and common DB is used
 
 
 
