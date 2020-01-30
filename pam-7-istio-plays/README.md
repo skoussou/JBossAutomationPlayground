@@ -126,11 +126,15 @@ template-kieserver-ingressgateway   template-rhpam-service-dev-pam-istio-system.
 
 * Note: ImageStreams should come from 'openshift' namespace, secrets/settigs.xml should be available for KIE Server in namespace based on previous template config
 * Create 2 new PVCs required by the KIE Servers in  __dev-pam__ 
+```
   * oc create -f ./RHPAM-and-ServiceMesh/PVC-V110-.yaml
   * oc create -f ./RHPAM-and-ServiceMesh/PVC-V150-.yaml
-* Create the necessary services for the 2 new KIE Servers to be used by ISTIO Config (see: ./RHPAM-and-ServiceMesh/Service.yaml pointing to Option 3)
-* Apply ISTIO Configs OPTION-3-ADVANCED-gateway-destrules-kie-server.yaml
-  * eg. cat ./RHPAM-and-ServiceMesh/OPTION-3-ADVANCED-gateway-destrules-kie-server.yaml | APP_SUBDOMAIN=$(echo $SUBDOMAIN) NAMESPACE=$(echo $APPS_NAMESPACE) envsubst | oc apply -f - 
+```
+* Create the necessary services for the 2 new KIE Servers to be used by ISTIO Config (see: [./RHPAM-and-ServiceMesh/Service.yaml](./RHPAM-and-ServiceMesh/Service.yaml) pointing to Option 3)
+* Apply ISTIO Configs [OPTION-3-ADVANCED-gateway-destrules-kie-server.yaml](./RHPAM-and-ServiceMesh/Service.yaml/OPTION-3-ADVANCED-gateway-destrules-kie-server.yaml)
+```
+  cat ./RHPAM-and-ServiceMesh/OPTION-3-ADVANCED-gateway-destrules-kie-server.yaml | APP_SUBDOMAIN=$(echo $SUBDOMAIN) NAMESPACE=$(echo $APPS_NAMESPACE) envsubst | oc apply -f - 
+```
 * Create KIE Servers
   * KIE Server kjar-a-1-1-0: APPLY DC-KIE-v110-2
   * KIE Server kjar-a-1-5-0: APPLY DC-KIE-v150-2
