@@ -158,10 +158,20 @@ rhpam-service-a-ingressgateway      rhpam-service-a-dev-pam-istio-system.apps.la
 * And the same by stopping requests without the header reduces the % going to the custom-kieserver-kjar-a-v150 KIE Server
 ![Routing to custom-kieserver-kjar-a services of different version based on HEADER- unequal](./images/KJAR-A-V-1-0-0-2-Versions-BusinessService-UNEQUAL-requests-WITH-WITHOUT-HEADER.png "Routing to custom-kieserver-kjar-a services of different version based on HEADER - unequal")
 
-
+### Setup KIE Server/KJARs with multiple Services for the same HTTP Header parameter
 * Using ./RHPAM-and-ServiceMesh/OPTION-3a-ADVANCED-gateway-destrules-kie-server-HEADER-BASED-ROUTING-WILDCARD.yaml (and appropriate __DC-KIE-110-2__, Service __custom-kieserver-kjar-a-v110-b__ from ./RHPAM-and-ServiceMesh/Service.yaml and __PVC-V110-b.yaml__ -storage- you expand the *KJAR-a-1-0-0* backend services and allow ISTIO to route to both at 50% rate
-* Below image showcaes KIALI's visualization on how a Business Service Request for KJAR-A-1-0-0 is served by 2 different K8s/ISTIO Services (custom-kieserver-kjar-a-v110, custom-kieserver-kjar-a-v100-b)
+* Below image showcaces KIALI's visualization on how a Business Service Request for KJAR-A-1-0-0 is served by 2 different K8s/ISTIO Services (custom-kieserver-kjar-a-v110, custom-kieserver-kjar-a-v100-b)
 ![Routing to 2 custom-kieserver-kjar-a services based on header bizversion](./images/KJAR-A-V-1-0-0-2-BusinessServices.png "Routing to 2 custom-kieserver-kjar-a services based on header bizversion")
+
+
+
+### Setup KIE Server/KJARs with multiple versions & multiple Services for the same HTTP Header parameter
+* With the ./RHPAM-and-ServiceMesh/OPTION-3a-ADVANCED-gateway-destrules-kie-server-HEADER-BASED-ROUTING-WILDCARD.yaml ISTIO config in place 
+* Start again without the header param requests will go to service 'custom-kieserver-kjar-a-v150'
+  * watch -n1 "curl -v http://rhpam-service-a-${APPS_NAMESPACE}-istio-system.${SUBDOMAIN}/docs
+* Below image showcaces KIALI's visualization on how a Business Service Request for KJAR-A-1-0-0 (via requests with 'bizversion: version-kjar-a-110') is served by 2 different K8s/ISTIO Services (custom-kieserver-kjar-a-v110, custom-kieserver-kjar-a-v100-b) and for KJAR-A-1-5-0 by 1 service (custom-kieserver-kjar-a-v150)
+![Routing to 2 custom-kieserver-kjar-a services based on header bizversion](./images/KJAR-A-V-1-1-0-2-BusinessServices-KJAR-A-V-1-5-0-1-Service.png "Routing to 2 custom-kieserver-kjar-a services based on header bizversion")
+
 
 
 
