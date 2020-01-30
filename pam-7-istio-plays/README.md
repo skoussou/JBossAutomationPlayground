@@ -224,6 +224,9 @@ template-kieserver-ingressgateway   template-rhpam-service-dev-pam-istio-system.
 
 ```
 
+* Below image showcaces KIALI's visualization on all above configs together
+![All configs together](./images/ALL-TOGETHER.png "All configs together")
+
 ### Configuring KIEContainers in ISTIO configured KIE Servers
 
 * WATCH POD LOGs for the following commands/tests
