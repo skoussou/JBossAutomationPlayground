@@ -32,7 +32,7 @@
 ```
 
 
-## Setup Template Auth Environment for ISTIO
+## Configure Template Created DEV Environment with ISTIO
 
 * Configure 'pam-dev' in ServiceMeshMemberRoll
 * Remove route for BC & KIE Server
@@ -83,6 +83,30 @@ spec:
 * Now for KIE Server (from template) http://template-rhpam-service-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com/docs/ should be accessible 
   * Test by calling: watch -n1 "curl -v http://template-rhpam-service-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com/docs/"
 
+```
+oc get gw
+NAME                AGE
+template-rhpam-gw   21h
+
+
+$ oc get VirtualService
+NAME                                GATEWAYS              HOSTS                                                                                      AGE
+template-rhpam-bc-virtual-service   [template-rhpam-gw]   [template-rhpam-bc-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com]        21h
+template-rhpam-virtual-service      [template-rhpam-gw]   [template-rhpam-service-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com]   21h
+
+$ oc get DestinationRules
+NAME                             HOST                             AGE
+custom-kieserver-kjar-a-v110     custom-kieserver-kjar-a-v110     19h
+custom-kieserver-kjar-a-v110-b   custom-kieserver-kjar-a-v110-b   50m
+custom-kieserver-kjar-a-v150     custom-kieserver-kjar-a-v150     19h
+dev-kie-server                   dev-kie-server                   21h
+
+$ oc get routes -n istio-system
+NAME                                HOST/PORT                                                                                PATH      SERVICES               PORT      TERMINATION   WILDCARD
+istio-ingressgateway                istio-ingressgateway-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com                       istio-ingressgateway   8080                    None
+template-bc-ingressgateway          template-rhpam-bc-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com                  istio-ingressgateway   http2                   None
+template-kieserver-ingressgateway   template-rhpam-service-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com             istio-ingressgateway   http2                   None
+```
 
 ## Setup KIE Server/KJARs with multiple versions
 
@@ -99,6 +123,26 @@ spec:
 * Access KIE Servers for kjar-a-1-1-0 & kjar-a-1-5-0 at: http://rhpam-service-a-${APPS_NAMESPACE}-istio-system.${SUBDOMAIN}/docs"
   * Check KIALI UI: The requests (execute ./RHPAM-and-ServiceMesh/loop-pam-custom-kjar-a.sh) should be 80%-20% on each server based on VirtualService weights, play with the weights)
 
+```
+oc get gw
+NAME                AGE
+rhpam-gw            19h
+
+
+$ oc get VirtualService
+NAME                                GATEWAYS              HOSTS                                                                                      AGE
+rhpam-virtual-service               [rhpam-gw]            [rhpam-service-a-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com]          19h
+
+$ oc get DestinationRules
+NAME                             HOST                             AGE
+custom-kieserver-kjar-a-v110     custom-kieserver-kjar-a-v110     19h
+custom-kieserver-kjar-a-v150     custom-kieserver-kjar-a-v150     19h
+
+$ oc get routes -n istio-system
+NAME                                HOST/PORT                                                                                PATH      SERVICES               PORT      TERMINATION   WILDCARD
+istio-ingressgateway                istio-ingressgateway-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com                       istio-ingressgateway   8080                    None
+rhpam-service-a-ingressgateway      rhpam-service-a-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com                    istio-ingressgateway   http2                   None
+```
   
 ### Setup KIE Server/KJARs with multiple versions to use HTTP Header parameter
 
@@ -108,7 +152,46 @@ spec:
   * watch -n1 "curl -v -H 'bizversion: version-kjar-a-110'  http://rhpam-service-a-${APPS_NAMESPACE}-istio-system.${SUBDOMAIN}/docs
 * without the header param requests will go to service 'custom-kieserver-kjar-a-v150'
   * watch -n1 "curl -v http://rhpam-service-a-${APPS_NAMESPACE}-istio-system.${SUBDOMAIN}/docs
-* This is the result of _Virtual Service_ *rhpam-virtual-service* checking for the header _bizversion_ and value 'version-kjar-a-110'
+* This is the result of _Virtual Service_ *rhpam-virtual-service* checking for the header _bizversion_ and value 'version-kjar-a-110' and sending to Service custom-kieserver-kjar-a-v110 via DestinationRule custom-kieserver-kjar-a-v110
+* Below image showcaes KIALI's visualization on how a Business Service Request for KJAR-A-1-0-0 is served by 2 different K8s/ISTIO Services (custom-kieserver-kjar-a-v110, custom-kieserver-kjar-a-v150)
+![Routing to custom-kieserver-kjar-a services of different version](./images/KJAR-A-V-1-0-0-2-Versions-BusinessService-50-50.png "KIALI Visualizetion")
+
+
+* Using ./RHPAM-and-ServiceMesh/OPTION-3a-ADVANCED-gateway-destrules-kie-server-HEADER-BASED-ROUTING-WILDCARD.yaml (and appropriate DC-KIE-110-2, Service *custom-kieserver-kjar-a-v110-b* from ./RHPAM-and-ServiceMesh/Service.yaml and PVC-V110-b.yaml -storage- you expand the *KJAR-a-1-0-0* backend services and allow ISTIO to route to both at 50% rate
+* Below image showcaes KIALI's visualization on how a Business Service Request for KJAR-A-1-0-0 is served by 2 different K8s/ISTIO Services (custom-kieserver-kjar-a-v110, custom-kieserver-kjar-a-v100-b)
+![Routing to custom-kieserver-kjar-a services based on header bizversion](./images/KJAR-A-V-1-0-0-2-BusinessServices.png "KIALI Visualizetion")
+
+
+
+* The ISTIO Configs in __pam-dev__ namespace
+
+```
+oc get gw
+NAME                AGE
+rhpam-gw            19h
+template-rhpam-gw   21h
+
+$ oc get VirtualService
+NAME                                GATEWAYS              HOSTS                                                                                      AGE
+rhpam-virtual-service               [rhpam-gw]            [rhpam-service-a-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com]          19h
+template-rhpam-bc-virtual-service   [template-rhpam-gw]   [template-rhpam-bc-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com]        21h
+template-rhpam-virtual-service      [template-rhpam-gw]   [template-rhpam-service-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com]   21h
+
+$ oc get DestinationRules
+NAME                             HOST                             AGE
+custom-kieserver-kjar-a-v110     custom-kieserver-kjar-a-v110     19h
+custom-kieserver-kjar-a-v110-b   custom-kieserver-kjar-a-v110-b   50m
+custom-kieserver-kjar-a-v150     custom-kieserver-kjar-a-v150     19h
+dev-kie-server                   dev-kie-server                   21h
+
+$ oc get routes -n istio-system
+NAME                                HOST/PORT                                                                                PATH      SERVICES               PORT      TERMINATION   WILDCARD
+istio-ingressgateway                istio-ingressgateway-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com                       istio-ingressgateway   8080                    None
+rhpam-service-a-ingressgateway      rhpam-service-a-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com                    istio-ingressgateway   http2                   None
+template-bc-ingressgateway          template-rhpam-bc-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com                  istio-ingressgateway   http2                   None
+template-kieserver-ingressgateway   template-rhpam-service-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com             istio-ingressgateway   http2                   None
+
+```
 
 
 ### Possible Smart Routing with ISTIO
