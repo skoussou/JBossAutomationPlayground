@@ -122,3 +122,21 @@ spec:
       targetPort: 8080
   selector:
     deploymentConfig: custom-kieserver-kjar-a-v150
+---
+# used by option-3-ADVANCED (non-template)
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-kieserver-kjar-a-v110-b
+  labels:
+    app: custom-kieserver-kjar-a
+    application: custom-kieserver-kjar-a-v110-b
+    version : kjar-a-1-1-0
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    deploymentConfig: custom-kieserver-kjar-a-v110-b
