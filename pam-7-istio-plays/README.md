@@ -9,6 +9,7 @@
   * ISTIO Installation: https://github.com/dsanchor/istio-tutorial
 
 == Install a standard DEV Environment (BC + KIE Server)
+
 * CICD Tools setup: https://github.com/erkerc/openshift-cd-demo.git
 * See https://github.com/skoussou/ocp_pam_app_dev 
   * Use the tools above rather than this repo's tool setup
@@ -16,7 +17,7 @@
   * eg. ./Infrastructure/scripts76/setup_DEV_managed.sh dev-pam cicd-rhpam gps apps.labs-aws-430a.sandbox452.opentlc.com nexu
 * Test BC To KIE Server (via CICD Nexus <distributionManagement> from the KJAR project) installaton of Evaluations project
   * eg. 
----
+```
  <distributionManagement>
    <repository>
      <id>Nexus</id>
@@ -27,15 +28,16 @@
      <url>http://nexus-cicd-rhpam.apps.labs-aws-430c.sandbox1287.opentlc.com/repository/maven-snapshots</url>
    </snapshotRepository>
  </distributionManagement>
----
+```
 
 
 == Setup Template Auth Environment for ISTIO
+
 * Configure 'pam-dev' in ServiceMeshMemberRoll
 * Remove route for BC & KIE Server
 * Create a new HTTP Service for BC and another for KIE Server to be used in the following ISTIO Configs (RHPAM-and-ServiceMesh/OPTION-0-gateway-destrules-kie-server.yam)
 
----
+```
 # used by OPTION-0 Template based kieserver
 apiVersion: v1
 kind: Service
@@ -53,7 +55,7 @@ spec:
       targetPort: 8080
   selector:
     deploymentConfig: gps-kieserver
----
+
 # used by OPTION-0 Template based kieserver
 apiVersion: v1
 kind: Service
@@ -71,7 +73,7 @@ spec:
       targetPort: 8080
   selector:
     deploymentConfig: gps-rhpamcentr
----
+```
 
 * Apply ISTIO Configs OPTION-0-gateway-destrules-kie-server.yaml
   * eg. cat ./RHPAM-and-ServiceMesh/OPTION-0-gateway-destrules-kie-server.yaml | APP_SUBDOMAIN=$(echo $SUBDOMAIN) NAMESPACE=$(echo $APPS_NAMESPACE) envsubst | oc apply -f - 
@@ -98,6 +100,7 @@ spec:
 
   
 === Setup KIE Server/KJARs with multiple versions to use HTTP Header parameter
+
 * After the previous setup is in place apply new ISTIO Configs OPTION-3a-ADVANCED-gateway-destrules-kie-server-HEADER-BASED-ROUTING.yaml
   * eg. cat ./RHPAM-and-ServiceMesh/OPTION-3a-ADVANCED-gateway-destrules-kie-server-HEADER-BASED-ROUTING.yaml | APP_SUBDOMAIN=$(echo $SUBDOMAIN) NAMESPACE=$(echo $APPS_NAMESPACE) envsubst | oc apply -f - 
 * Now rather than 80/20 the requests will go to service 'custom-kieserver-kjar-a-v110' when the request to Route http://rhpam-service-a-${APPS_NAMESPACE}-istio-system.${SUBDOMAIN}/docs contains also header 'bizversion: version-kjar-a-110'
@@ -108,6 +111,7 @@ spec:
 
 
 === Possible Smart Routing with ISTIO
+
 * We could create a *Smart Router* (Routing) effect with ISTIO
   * ALIAS BASED Route for all versions of a specific KJAR service eg. http://rhpam-service-a-${APPS_NAMESPACE}-istio-system.${SUBDOMAIN} (where -a- is the KJAR/ALIAS name)
   * Virtual Service which separates requests based on LABEL to a "subset" of KIE Servers (TBD: Test if host in VirtualService .... which is K8s service name could be wildcard so that we have more than one service used)
