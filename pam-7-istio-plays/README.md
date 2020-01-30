@@ -15,7 +15,10 @@
 * See https://github.com/skoussou/ocp_pam_app_dev 
   * Use the tools above rather than this repo's tool setup
   * Configure the OCP CLuster from above URLs/DOmains to be used
-  * eg. ./Infrastructure/scripts76/setup_DEV_managed.sh dev-pam cicd-rhpam gps apps.labs-aws-430a.sandbox452.opentlc.com nexu
+  * eg. 
+```
+./Infrastructure/scripts76/setup_DEV_managed.sh dev-pam cicd-rhpam gps apps.labs-aws-430a.sandbox452.opentlc.com nexu
+```
 * Test BC To KIE Server (via CICD Nexus <distributionManagement> from the KJAR project) installaton of Evaluations project
   * eg. 
 ```
@@ -77,7 +80,9 @@ spec:
 ```
 
 * Apply ISTIO Configs OPTION-0-gateway-destrules-kie-server.yaml
-  * eg. cat ./RHPAM-and-ServiceMesh/OPTION-0-gateway-destrules-kie-server.yaml | APP_SUBDOMAIN=$(echo $SUBDOMAIN) NAMESPACE=$(echo $APPS_NAMESPACE) envsubst | oc apply -f - 
+```
+eg. cat ./RHPAM-and-ServiceMesh/OPTION-0-gateway-destrules-kie-server.yaml | APP_SUBDOMAIN=$(echo $SUBDOMAIN) NAMESPACE=$(echo $APPS_NAMESPACE) envsubst | oc apply -f - 
+```
 * Ensure __istio-proxy__ side car is added to DC for KIE Server & RHPAM 
 ```
 eg.
@@ -131,7 +136,7 @@ template-kieserver-ingressgateway   template-rhpam-service-dev-pam-istio-system.
   * oc create -f ./RHPAM-and-ServiceMesh/PVC-V150-.yaml
 ```
 * Create the necessary services for the 2 new KIE Servers to be used by ISTIO Config (see: [./RHPAM-and-ServiceMesh/Service.yaml](./RHPAM-and-ServiceMesh/Service.yaml) pointing to Option 3)
-* Apply ISTIO Configs [OPTION-3-ADVANCED-gateway-destrules-kie-server.yaml](./RHPAM-and-ServiceMesh/Service.yaml/OPTION-3-ADVANCED-gateway-destrules-kie-server.yaml)
+* Apply ISTIO Configs [OPTION-3-ADVANCED-gateway-destrules-kie-server.yaml](./RHPAM-and-ServiceMesh/OPTION-3-ADVANCED-gateway-destrules-kie-server.yaml)
 ```
   cat ./RHPAM-and-ServiceMesh/OPTION-3-ADVANCED-gateway-destrules-kie-server.yaml | APP_SUBDOMAIN=$(echo $SUBDOMAIN) NAMESPACE=$(echo $APPS_NAMESPACE) envsubst | oc apply -f - 
 ```
@@ -139,7 +144,7 @@ template-kieserver-ingressgateway   template-rhpam-service-dev-pam-istio-system.
   * KIE Server kjar-a-1-1-0: APPLY DC-KIE-v110-2
   * KIE Server kjar-a-1-5-0: APPLY DC-KIE-v150-2
 * Access KIE Servers for kjar-a-1-1-0 & kjar-a-1-5-0 at: http://rhpam-service-a-${APPS_NAMESPACE}-istio-system.${SUBDOMAIN}/docs"
-  * Check KIALI UI: The requests (execute ./RHPAM-and-ServiceMesh/loop-pam-custom-kjar-a.sh) should be 80%-20% on each server based on VirtualService weights, play with the weights)
+  * Check KIALI UI: The requests (execute [./RHPAM-and-ServiceMesh/loop-pam-custom-kjar-a.sh](./RHPAM-and-ServiceMesh/loop-pam-custom-kjar-a.sh)) should be 80%-20% on each server based on VirtualService weights, play with the weights)
 * The ISTIO Configs in __dev-pam__ namespace
 ```
 oc get gw
@@ -164,7 +169,7 @@ rhpam-service-a-ingressgateway      rhpam-service-a-dev-pam-istio-system.apps.la
   
 ### Setup KIE Server/KJARs with multiple (KJAR) versions (Use HTTP Header parameter)
 
-* After the previous setup is in place apply new ISTIO Configs OPTION-3a-ADVANCED-gateway-destrules-kie-server-HEADER-BASED-ROUTING.yaml
+* After the previous setup is in place apply new ISTIO Configs [OPTION-3a-ADVANCED-gateway-destrules-kie-server-HEADER-BASED-ROUTING.yaml](./RHPAM-and-ServiceMesh/OPTION-3a-ADVANCED-gateway-destrules-kie-server-HEADER-BASED-ROUTING.yaml)
 ```
    eg.  
    cat ./RHPAM-and-ServiceMesh/OPTION-3a-ADVANCED-gateway-destrules-kie-server-HEADER-BASED-ROUTING.yaml | APP_SUBDOMAIN=$(echo $SUBDOMAIN) NAMESPACE=$(echo $APPS_NAMESPACE) envsubst | oc apply -f - 
