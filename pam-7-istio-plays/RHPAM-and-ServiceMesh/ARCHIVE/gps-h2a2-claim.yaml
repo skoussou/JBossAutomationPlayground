@@ -1,0 +1,20 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: gps-h2a1-claim
+  namespace: dev-pam-operator
+  labels:
+    app: custom-a1-kieserver
+    application: custom-a1-kieserver
+    rhpam: '7.6.0'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: gp2
+  volumeMode: Filesystem
+
+
+

@@ -1,0 +1,446 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  generateName: custom-a-kieserver-2
+  annotations:
+    k8s.v1.cni.cncf.io/networks: istio-cni
+    k8s.v1.cni.cncf.io/networks-status: |-
+      [{
+          "name": "openshift-sdn",
+          "interface": "eth0",
+          "ips": [
+              "10.128.2.63"
+          ],
+          "dns": {},
+          "default-route": [
+              "10.128.2.1"
+          ]
+      },{
+          "name": "istio-cni",
+          "dns": {}
+      }]
+    openshift.io/deployment-config.latest-version: '2'
+    openshift.io/deployment-config.name: custom-a-kieserver
+    openshift.io/deployment.name: custom-a-kieserver-2
+    openshift.io/scc: restricted
+    sidecar.istio.io/inject: 'true'
+    sidecar.istio.io/status: >-
+      {"version":"7dd5c227bf947d6c62ebc1bd87a7a724b824b9cc52f911fa78030de28f6b6ee9","annotations":{"k8s.v1.cni.cncf.io/networks":"istio-cni"},"initContainers":null,"containers":["istio-proxy"],"volumes":["istio-envoy","istio-certs"],"imagePullSecrets":null}
+  selfLink: /api/v1/namespaces/dev-pam-operator/pods/custom-a-kieserver-2-smjsg
+  resourceVersion: '2303475'
+  name: custom-a-kieserver-2-smjsg
+  uid: 8d0ed27a-c67a-47cc-8d22-520e6a8c1685
+  creationTimestamp: '2020-01-27T14:22:55Z'
+  namespace: dev-pam-operator
+  ownerReferences:
+    - apiVersion: v1
+      kind: ReplicationController
+      name: custom-a-kieserver-2
+      uid: dec8df8b-887f-448b-9416-bbe6837662cc
+      controller: true
+      blockOwnerDeletion: true
+  labels:
+    app: custom-a-kieserver
+    application: custom-a-kieserver
+    deployment: custom-a-kieserver-2
+    deploymentConfig: custom-a-kieserver
+    deploymentconfig: custom-a-kieserver
+    failure-domain.beta.kubernetes.io/region: eu-central-1
+    failure-domain.beta.kubernetes.io/zone: eu-central-1b
+    version: v100
+spec:
+  restartPolicy: Always
+  serviceAccountName: gps-rhpamsvc
+  imagePullSecrets:
+    - name: gps-rhpamsvc-dockercfg-pmq2l
+  priority: 0
+  schedulerName: default-scheduler
+  enableServiceLinks: true
+  terminationGracePeriodSeconds: 60
+  nodeName: ip-10-0-147-255.eu-central-1.compute.internal
+  securityContext:
+    seLinuxOptions:
+      level: 's0:c24,c4'
+    fsGroup: 1000560000
+  containers:
+    - resources: {}
+      readinessProbe:
+        exec:
+          command:
+            - /bin/bash
+            - '-c'
+            - >-
+              curl --fail --silent -u 'rhpamadmin:rhpamadmin760'
+              http://localhost:8080/services/rest/server/readycheck
+        initialDelaySeconds: 60
+        timeoutSeconds: 2
+        periodSeconds: 30
+        successThreshold: 1
+        failureThreshold: 6
+      terminationMessagePath: /dev/termination-log
+      name: custom-a-kieserver
+      livenessProbe:
+        exec:
+          command:
+            - /bin/bash
+            - '-c'
+            - >-
+              curl --fail --silent -u 'rhpamadmin:rhpamadmin760'
+              http://localhost:8080/services/rest/server/healthcheck
+        initialDelaySeconds: 180
+        timeoutSeconds: 2
+        periodSeconds: 15
+        successThreshold: 1
+        failureThreshold: 3
+      env:
+        - name: DATASOURCES
+          value: RHPAM
+        - name: RHPAM_DATABASE
+          value: rhpam7
+        - name: RHPAM_JNDI
+          value: 'java:/jboss/datasources/rhpam'
+        - name: RHPAM_JTA
+          value: 'true'
+        - name: RHPAM_DRIVER
+          value: h2
+        - name: RHPAM_USERNAME
+          value: sa
+        - name: RHPAM_PASSWORD
+          value: tLHJoO0!
+        - name: RHPAM_XA_CONNECTION_PROPERTY_URL
+          value: 'jdbc:h2:/opt/eap/standalone/data/rhpam'
+        - name: RHPAM_SERVICE_HOST
+          value: dummy_ignored
+        - name: RHPAM_SERVICE_PORT
+          value: '12345'
+        - name: KIE_SERVER_PERSISTENCE_DIALECT
+          value: org.hibernate.dialect.H2Dialect
+        - name: DROOLS_SERVER_FILTER_CLASSES
+          value: 'true'
+        - name: KIE_ADMIN_USER
+          value: rhpamadmin
+        - name: KIE_ADMIN_PWD
+          value: rhpamadmin760
+        - name: KIE_MBEANS
+          value: enabled
+        - name: KIE_SERVER_BYPASS_AUTH_USER
+          value: 'false'
+        - name: KIE_SERVER_CONTROLLER_USER
+          value: controllerUser
+        - name: KIE_SERVER_CONTROLLER_PWD
+          value: controllerUser123
+        - name: KIE_SERVER_CONTROLLER_TOKEN
+        - name: KIE_SERVER_CONTROLLER_SERVICE
+          value: gps-rhpamcentr
+        - name: KIE_SERVER_CONTROLLER_PROTOCOL
+          value: ws
+        - name: KIE_SERVER_ID
+          value: gps-kieserver
+        - name: KIE_SERVER_ROUTE_NAME
+          value: custom-a-kieserver
+        - name: KIE_SERVER_USE_SECURE_ROUTE_NAME
+          value: 'false'
+        - name: KIE_SERVER_PERSISTENCE_DS
+          value: 'java:/jboss/datasources/rhpam'
+        - name: KIE_SERVER_USER
+          value: executionUser
+        - name: KIE_SERVER_PWD
+          value: executionUser123
+        - name: MAVEN_REPOS
+          value: 'RHPAMCENTR,EXTERNAL'
+        - name: RHPAMCENTR_MAVEN_REPO_SERVICE
+          value: gps-rhpamcentr
+        - name: RHPAMCENTR_MAVEN_REPO_PATH
+          value: /maven2/
+        - name: RHPAMCENTR_MAVEN_REPO_USERNAME
+          value: mavenUser
+        - name: RHPAMCENTR_MAVEN_REPO_PASSWORD
+          value: bvADPV2!
+        - name: EXTERNAL_MAVEN_REPO_ID
+          value: maven-public
+        - name: EXTERNAL_MAVEN_REPO_URL
+          value: >-
+            http://nexus-cicd-rhpam.apps.labs-aws-430a.sandbox452.opentlc.com/maven-public
+        - name: EXTERNAL_MAVEN_REPO_USERNAME
+          value: admin
+        - name: EXTERNAL_MAVEN_REPO_PASSWORD
+          value: admin123
+        - name: HTTPS_KEYSTORE_DIR
+          value: /etc/kieserver-secret-volume
+        - name: HTTPS_KEYSTORE
+          value: kiekeystore.jks
+        - name: HTTPS_NAME
+          value: kieserver
+        - name: HTTPS_PASSWORD
+          value: mykeystorepass
+        - name: SSO_URL
+        - name: SSO_OPENIDCONNECT_DEPLOYMENTS
+          value: ROOT.war
+        - name: SSO_REALM
+        - name: SSO_SECRET
+        - name: SSO_CLIENT
+        - name: SSO_USERNAME
+        - name: SSO_PASSWORD
+        - name: SSO_DISABLE_SSL_CERTIFICATE_VALIDATION
+          value: 'false'
+        - name: SSO_PRINCIPAL_ATTRIBUTE
+          value: preferred_username
+        - name: HOSTNAME_HTTP
+          value: gps-dev-pam-operator.apps.labs-aws-430a.sandbox452.opentlc.com
+        - name: HOSTNAME_HTTPS
+        - name: AUTH_LDAP_URL
+        - name: AUTH_LDAP_BIND_DN
+        - name: AUTH_LDAP_BIND_CREDENTIAL
+        - name: AUTH_LDAP_JAAS_SECURITY_DOMAIN
+        - name: AUTH_LDAP_BASE_CTX_DN
+        - name: AUTH_LDAP_BASE_FILTER
+        - name: AUTH_LDAP_SEARCH_SCOPE
+        - name: AUTH_LDAP_SEARCH_TIME_LIMIT
+        - name: AUTH_LDAP_DISTINGUISHED_NAME_ATTRIBUTE
+        - name: AUTH_LDAP_PARSE_USERNAME
+        - name: AUTH_LDAP_USERNAME_BEGIN_STRING
+        - name: AUTH_LDAP_USERNAME_END_STRING
+        - name: AUTH_LDAP_ROLE_ATTRIBUTE_ID
+        - name: AUTH_LDAP_ROLES_CTX_DN
+        - name: AUTH_LDAP_ROLE_FILTER
+        - name: AUTH_LDAP_ROLE_RECURSION
+        - name: AUTH_LDAP_DEFAULT_ROLE
+        - name: AUTH_LDAP_ROLE_NAME_ATTRIBUTE_ID
+        - name: AUTH_LDAP_PARSE_ROLE_NAME_FROM_DN
+        - name: AUTH_LDAP_ROLE_ATTRIBUTE_IS_DN
+        - name: AUTH_LDAP_REFERRAL_USER_ATTRIBUTE_ID_TO_CHECK
+        - name: AUTH_ROLE_MAPPER_ROLES_PROPERTIES
+        - name: AUTH_ROLE_MAPPER_REPLACE_ROLE
+      securityContext:
+        capabilities:
+          drop:
+            - KILL
+            - MKNOD
+            - SETGID
+            - SETUID
+        runAsUser: 1000560000
+      ports:
+        - name: jolokia
+          containerPort: 8778
+          protocol: TCP
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        - name: https
+          containerPort: 8443
+          protocol: TCP
+      imagePullPolicy: Always
+      volumeMounts:
+        - name: kieserver-keystore-volume
+          readOnly: true
+          mountPath: /etc/kieserver-secret-volume
+        - name: gps-h2-pvol
+          mountPath: /opt/eap/standalone/data
+        - name: settings-volume
+          mountPath: /home/jboss/.m2/settings.xml
+          subPath: settings.xml
+        - name: gps-rhpamsvc-token-wb629
+          readOnly: true
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      terminationMessagePolicy: File
+      image: >-
+        image-registry.openshift-image-registry.svc:5000/openshift/rhpam-kieserver-rhel8@sha256:03f9fe0bf85ad57949e2d0b1a92c9592ff516c1bad06b34b42789f63b2e502c1
+    - resources:
+        limits:
+          cpu: '2'
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      readinessProbe:
+        httpGet:
+          path: /healthz/ready
+          port: 15020
+          scheme: HTTP
+        initialDelaySeconds: 1
+        timeoutSeconds: 1
+        periodSeconds: 2
+        successThreshold: 1
+        failureThreshold: 30
+      terminationMessagePath: /dev/termination-log
+      name: istio-proxy
+      env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: INSTANCE_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: ISTIO_META_POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: ISTIO_META_CONFIG_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: ISTIO_META_INTERCEPTION_MODE
+          value: REDIRECT
+        - name: ISTIO_METAJSON_ANNOTATIONS
+          value: >
+            {"openshift.io/deployment-config.latest-version":"2","openshift.io/deployment-config.name":"custom-a-kieserver","openshift.io/deployment.name":"custom-a-kieserver-2","openshift.io/scc":"restricted","sidecar.istio.io/inject":"true"}
+        - name: ISTIO_METAJSON_LABELS
+          value: >
+            {"app":"custom-a-kieserver","application":"custom-a-kieserver","deployment":"custom-a-kieserver-2","deploymentConfig":"custom-a-kieserver","deploymentconfig":"custom-a-kieserver","version":"v100"}
+      securityContext:
+        capabilities:
+          drop:
+            - KILL
+            - SETUID
+            - SETGID
+            - MKNOD
+        runAsUser: 1000560001
+        readOnlyRootFilesystem: true
+      ports:
+        - name: http-envoy-prom
+          containerPort: 15090
+          protocol: TCP
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: istio-envoy
+          mountPath: /etc/istio/proxy
+        - name: istio-certs
+          readOnly: true
+          mountPath: /etc/certs/
+        - name: gps-rhpamsvc-token-wb629
+          readOnly: true
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      terminationMessagePolicy: File
+      image: 'registry.redhat.io/openshift-service-mesh/proxyv2-rhel8:1.0.4'
+      args:
+        - proxy
+        - sidecar
+        - '--domain'
+        - $(POD_NAMESPACE).svc.cluster.local
+        - '--configPath'
+        - /etc/istio/proxy
+        - '--binaryPath'
+        - /usr/local/bin/envoy
+        - '--serviceCluster'
+        - custom-a-kieserver.$(POD_NAMESPACE)
+        - '--drainDuration'
+        - 45s
+        - '--parentShutdownDuration'
+        - 1m0s
+        - '--discoveryAddress'
+        - 'istio-pilot.istio-system:15010'
+        - '--zipkinAddress'
+        - 'zipkin.istio-system:9411'
+        - '--connectTimeout'
+        - 10s
+        - '--proxyAdminPort'
+        - '15000'
+        - '--concurrency'
+        - '2'
+        - '--controlPlaneAuthPolicy'
+        - NONE
+        - '--statusPort'
+        - '15020'
+        - '--applicationPorts'
+        - '8778,8080,8443'
+  serviceAccount: gps-rhpamsvc
+  volumes:
+    - name: kieserver-keystore-volume
+      secret:
+        secretName: kieserver-app-secret
+        defaultMode: 420
+    - name: settings-volume
+      configMap:
+        name: settings.xml
+        defaultMode: 420
+    - name: gps-h2-pvol
+      persistentVolumeClaim:
+        claimName: gps-h2-claim
+    - name: gps-rhpamsvc-token-wb629
+      secret:
+        secretName: gps-rhpamsvc-token-wb629
+        defaultMode: 420
+    - name: istio-envoy
+      emptyDir:
+        medium: Memory
+    - name: istio-certs
+      secret:
+        secretName: istio.gps-rhpamsvc
+        defaultMode: 420
+        optional: true
+  dnsPolicy: ClusterFirst
+  tolerations:
+    - key: node.kubernetes.io/not-ready
+      operator: Exists
+      effect: NoExecute
+      tolerationSeconds: 300
+    - key: node.kubernetes.io/unreachable
+      operator: Exists
+      effect: NoExecute
+      tolerationSeconds: 300
+    - key: node.kubernetes.io/memory-pressure
+      operator: Exists
+      effect: NoSchedule
+status:
+  phase: Running
+  conditions:
+    - type: Initialized
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2020-01-27T14:22:55Z'
+    - type: Ready
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2020-01-27T14:27:09Z'
+    - type: ContainersReady
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2020-01-27T14:27:09Z'
+    - type: PodScheduled
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2020-01-27T14:22:55Z'
+  hostIP: 10.0.147.255
+  podIP: 10.128.2.63
+  podIPs:
+    - ip: 10.128.2.63
+  startTime: '2020-01-27T14:22:55Z'
+  containerStatuses:
+    - restartCount: 0
+      started: true
+      ready: true
+      name: custom-a-kieserver
+      state:
+        running:
+          startedAt: '2020-01-27T14:23:04Z'
+      imageID: >-
+        image-registry.openshift-image-registry.svc:5000/openshift/rhpam-kieserver-rhel8@sha256:03f9fe0bf85ad57949e2d0b1a92c9592ff516c1bad06b34b42789f63b2e502c1
+      image: >-
+        image-registry.openshift-image-registry.svc:5000/openshift/rhpam-kieserver-rhel8@sha256:03f9fe0bf85ad57949e2d0b1a92c9592ff516c1bad06b34b42789f63b2e502c1
+      lastState: {}
+      containerID: 'cri-o://702e199faef0e5f212fb2c5662b44ede632e2cebf5c702f8dcad912ed08de68b'
+    - restartCount: 0
+      started: true
+      ready: true
+      name: istio-proxy
+      state:
+        running:
+          startedAt: '2020-01-27T14:23:04Z'
+      imageID: >-
+        registry.redhat.io/openshift-service-mesh/proxyv2-rhel8@sha256:5c9e3100ac1d4c520f935eeb5db8892051acb84a4ba11f708e143dd78379da26
+      image: 'registry.redhat.io/openshift-service-mesh/proxyv2-rhel8:1.0.4'
+      lastState: {}
+      containerID: 'cri-o://f78962e9f0ef1a11e2b98ed00bd0d7a629c5984e484f5b01933351dc8c2e5264'
+  qosClass: Burstable
+

@@ -1,0 +1,245 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: custom-kieserver-kjar-a-v150
+  namespace: dev-pam
+  labels:
+    app: custom-kieserver-kjar-a
+    application: custom-kieserver-kjar-a
+    rhpam: '7.6.0'
+    service: custom-kieserver-kjar-a-v150
+    version: kjar-a-1-5-0
+spec:
+  strategy:
+    type: Recreate
+    recreateParams:
+      timeoutSeconds: 1200
+      post:
+        failurePolicy: Abort
+        execNewPod:
+          command:
+            - /bin/bash
+            - '-c'
+            - >-
+              /opt/eap/bin/add-user.sh -a -u testuser1 -p testuser1aa -g
+              kie-server,admin,level1;
+            - cat /opt/eap/standalone/configuration/application-roles.properties
+          containerName: custom-kieserver-kjar-a-v150
+    resources: {}
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - custom-kieserver-kjar-a-v150
+        from:
+          kind: ImageStreamTag
+          namespace: openshift
+          name: 'rhpam-kieserver-rhel8:7.6.0'
+    - type: ConfigChange
+  replicas: 1
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    deploymentConfig: custom-kieserver-kjar-a-v150
+  template:
+    metadata:
+      name: custom-kieserver-kjar-a-v150
+      labels:
+        app: custom-kieserver-kjar-a
+        application: custom-kieserver-kjar-a
+        deploymentConfig: custom-kieserver-kjar-a-v150
+        version: kjar-a-1-5-0
+      annotations:
+        sidecar.istio.io/inject: 'true'
+    spec:
+      restartPolicy: Always
+      serviceAccountName: gps-rhpamsvc
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 60
+      securityContext: {}
+      containers:
+        - resources{}:
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - '-c'
+                - >-
+                  curl --fail --silent -u 'rhpamadmin:rhpamadmin760'
+                  http://localhost:8080/services/rest/server/readycheck
+            initialDelaySeconds: 60
+            timeoutSeconds: 2
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 6
+          terminationMessagePath: /dev/termination-log
+          name: custom-kieserver-kjar-a-v150
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - '-c'
+                - >-
+                  curl --fail --silent -u 'rhpamadmin:rhpamadmin760'
+                  http://localhost:8080/services/rest/server/healthcheck
+            initialDelaySeconds: 180
+            timeoutSeconds: 2
+            periodSeconds: 15
+            successThreshold: 1
+            failureThreshold: 3
+          env:
+            - name: DATASOURCES
+              value: RHPAM
+            - name: RHPAM_DATABASE
+              value: rhpam7
+            - name: RHPAM_JNDI
+              value: 'java:/jboss/datasources/rhpam'
+            - name: RHPAM_JTA
+              value: 'true'
+            - name: RHPAM_DRIVER
+              value: h2
+            - name: RHPAM_USERNAME
+              value: sa
+            - name: RHPAM_PASSWORD
+              value: tLHJoO0!
+            - name: RHPAM_XA_CONNECTION_PROPERTY_URL
+              value: 'jdbc:h2:/opt/eap/standalone/data/rhpam'
+            - name: RHPAM_SERVICE_HOST
+              value: dummy_ignored
+            - name: RHPAM_SERVICE_PORT
+              value: '12345'
+            - name: KIE_SERVER_PERSISTENCE_DIALECT
+              value: org.hibernate.dialect.H2Dialect
+            - name: DROOLS_SERVER_FILTER_CLASSES
+              value: 'true'
+            - name: KIE_ADMIN_USER
+              value: rhpamadmin
+            - name: KIE_ADMIN_PWD
+              value: rhpamadmin760
+            - name: KIE_MBEANS
+              value: enabled
+            - name: KIE_SERVER_BYPASS_AUTH_USER
+              value: 'false'
+            - name: KIE_SERVER_CONTROLLER_USER
+              value: controllerUser
+            - name: KIE_SERVER_CONTROLLER_PWD
+              value: controllerUser123
+            - name: KIE_SERVER_CONTROLLER_TOKEN
+            - name: KIE_SERVER_CONTROLLER_SERVICE
+              value: gps-rhpamcentr
+            - name: KIE_SERVER_CONTROLLER_PROTOCOL
+              value: ws
+            - name: KIE_SERVER_ID
+              value: gps-kieserver
+            - name: KIE_SERVER_ROUTE_NAME
+              value: custom-kieserver-kjar-a-v150
+            - name: KIE_SERVER_USE_SECURE_ROUTE_NAME
+              value: 'false'
+            - name: KIE_SERVER_PERSISTENCE_DS
+              value: 'java:/jboss/datasources/rhpam'
+            - name: KIE_SERVER_USER
+              value: executionUser
+            - name: KIE_SERVER_PWD
+              value: executionUser123
+            - name: MAVEN_REPOS
+              value: 'RHPAMCENTR,EXTERNAL'
+            - name: RHPAMCENTR_MAVEN_REPO_SERVICE
+              value: gps-rhpamcentr
+            - name: RHPAMCENTR_MAVEN_REPO_PATH
+              value: /maven2/
+            - name: RHPAMCENTR_MAVEN_REPO_USERNAME
+              value: mavenUser
+            - name: RHPAMCENTR_MAVEN_REPO_PASSWORD
+              value: bvADPV2!
+            - name: EXTERNAL_MAVEN_REPO_ID
+              value: maven-public
+            - name: EXTERNAL_MAVEN_REPO_URL
+              value: >-
+                http://nexus-cicd-rhpam.apps.labs-aws-430c.sandbox1287.opentlc.com/maven-public
+            - name: EXTERNAL_MAVEN_REPO_USERNAME
+              value: admin
+            - name: EXTERNAL_MAVEN_REPO_PASSWORD
+              value: admin123
+            - name: HTTPS_KEYSTORE_DIR
+              value: /etc/kieserver-secret-volume
+            - name: HTTPS_KEYSTORE
+              value: kiekeystore.jks
+            - name: HTTPS_NAME
+              value: kieserver
+            - name: HTTPS_PASSWORD
+              value: mykeystorepass
+            - name: SSO_URL
+            - name: SSO_OPENIDCONNECT_DEPLOYMENTS
+              value: ROOT.war
+            - name: SSO_REALM
+            - name: SSO_SECRET
+            - name: SSO_CLIENT
+            - name: SSO_USERNAME
+            - name: SSO_PASSWORD
+            - name: SSO_DISABLE_SSL_CERTIFICATE_VALIDATION
+              value: 'false'
+            - name: SSO_PRINCIPAL_ATTRIBUTE
+              value: preferred_username
+            - name: HOSTNAME_HTTP
+            - name: HOSTNAME_HTTPS
+            - name: AUTH_LDAP_URL
+            - name: AUTH_LDAP_BIND_DN
+            - name: AUTH_LDAP_BIND_CREDENTIAL
+            - name: AUTH_LDAP_JAAS_SECURITY_DOMAIN
+            - name: AUTH_LDAP_BASE_CTX_DN
+            - name: AUTH_LDAP_BASE_FILTER
+            - name: AUTH_LDAP_SEARCH_SCOPE
+            - name: AUTH_LDAP_SEARCH_TIME_LIMIT
+            - name: AUTH_LDAP_DISTINGUISHED_NAME_ATTRIBUTE
+            - name: AUTH_LDAP_PARSE_USERNAME
+            - name: AUTH_LDAP_USERNAME_BEGIN_STRING
+            - name: AUTH_LDAP_USERNAME_END_STRING
+            - name: AUTH_LDAP_ROLE_ATTRIBUTE_ID
+            - name: AUTH_LDAP_ROLES_CTX_DN
+            - name: AUTH_LDAP_ROLE_FILTER
+            - name: AUTH_LDAP_ROLE_RECURSION
+            - name: AUTH_LDAP_DEFAULT_ROLE
+            - name: AUTH_LDAP_ROLE_NAME_ATTRIBUTE_ID
+            - name: AUTH_LDAP_PARSE_ROLE_NAME_FROM_DN
+            - name: AUTH_LDAP_ROLE_ATTRIBUTE_IS_DN
+            - name: AUTH_LDAP_REFERRAL_USER_ATTRIBUTE_ID_TO_CHECK
+            - name: AUTH_ROLE_MAPPER_ROLES_PROPERTIES
+            - name: AUTH_ROLE_MAPPER_REPLACE_ROLE
+          ports:
+            - name: jolokia
+              containerPort: 8778
+              protocol: TCP
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: https
+              containerPort: 8443
+              protocol: TCP
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: kieserver-keystore-volume
+              readOnly: true
+              mountPath: /etc/kieserver-secret-volume
+            - name: gps-h2-claim-v150
+              mountPath: /opt/eap/standalone/data
+            - name: settings-volume
+              mountPath: /home/jboss/.m2/settings.xml
+              subPath: settings.xml
+          terminationMessagePolicy: File
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/openshift/rhpam-kieserver-rhel8@sha256:03f9fe0bf85ad57949e2d0b1a92c9592ff516c1bad06b34b42789f63b2e502c1
+      serviceAccount: gps-rhpamsvc
+      volumes:
+        - name: kieserver-keystore-volume
+          secret:
+            secretName: kieserver-app-secret
+            defaultMode: 420
+        - name: settings-volume
+          configMap:
+            name: settings.xml
+            defaultMode: 420
+        - name: gps-h2-claim-v150
+          persistentVolumeClaim:
+            claimName: gps-h2-claim-v150
+      dnsPolicy: ClusterFirst

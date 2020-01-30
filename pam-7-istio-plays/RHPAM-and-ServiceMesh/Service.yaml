@@ -1,0 +1,124 @@
+# RHPAM BC SVC over HTTP only
+apiVersion: v1
+kind: Service
+metadata:
+  name: pam-bc
+  labels:
+    app: gps-pamdev
+    application: gps    
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    deploymentConfig: gps-rhpamcentr
+---
+# USED BY Option-2-ADVANCED
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-a1-kieserver
+  labels:
+    app: custom-a1-kieserver
+    application: custom-a1-kieserver
+    version : a2
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    deploymentConfig: custom-a1-kieserver
+---
+# used by option-2-advaced
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-a2-kieserver
+  labels:
+    app: custom-a2-kieserver
+    application: custom-a2-kieserver
+    version : a2
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    deploymentConfig: custom-a2-kieserver
+---
+# used by OPTION-0 Template based kieserver
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-kie-server
+  labels:
+    app: gps-pamdev
+    application: dev-kie-server
+    group : istio-pam-tests
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    deploymentConfig: gps-kieserver
+---
+# used by OPTION-0 Template based kieserver
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-bc
+  labels:
+    app: gps-pamdev
+    application: dev-bc  
+    group : istio-pam-tests
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    deploymentConfig: gps-rhpamcentr
+---
+# used by option-3-ADVANCED (non-template)
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-kieserver-kjar-a-v110
+  labels:
+    app: custom-kieserver-kjar-a
+    application: custom-kieserver-kjar-a-v110
+    version : kjar-a-1-1-0
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    deploymentConfig: custom-kieserver-kjar-a-v110
+---
+# used by option-3-ADVANCED (non-template)
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-kieserver-kjar-a-v150
+  labels:
+    app: custom-kieserver-kjar-a
+    application: custom-kieserver-kjar-a-v150
+    version : kjar-a-1-5-0
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    deploymentConfig: custom-kieserver-kjar-a-v150
