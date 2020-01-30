@@ -1,14 +1,15 @@
-= How to Test RH-PAM & ISTIO (Ideas)
+# How to Test RH-PAM & ISTIO (Ideas)
 
 * Pre-reqs
-  * Istion must be available in OCP Cluster
+  * ISTIO must be installed & available in OCP Cluster See [Documentation](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.3/html-single/service_mesh/index#ossm-supported-configurations_preparing-ossm-installation)
   * Be able to set ServiceMeshMemberRoll to the namespace you will use for RHPAM Deployments accessible via ISTIO
 
 * To Install ISTIO Read
   * OCP 4 Installation: https://gitlab.consulting.redhat.com/enterprise-integration-design-sprint/infra/ocp
   * ISTIO Installation: https://github.com/dsanchor/istio-tutorial
+  * See also 'Labs - Openshift Service Mesh - Istio.odp' in this repository on adding ISTIO PRoxy side car
 
-== Install a standard DEV Environment (BC + KIE Server)
+## Install a standard DEV Environment (BC + KIE Server)
 
 * CICD Tools setup: https://github.com/erkerc/openshift-cd-demo.git
 * See https://github.com/skoussou/ocp_pam_app_dev 
@@ -31,7 +32,7 @@
 ```
 
 
-== Setup Template Auth Environment for ISTIO
+## Setup Template Auth Environment for ISTIO
 
 * Configure 'pam-dev' in ServiceMeshMemberRoll
 * Remove route for BC & KIE Server
@@ -83,7 +84,7 @@ spec:
   * Test by calling: watch -n1 "curl -v http://template-rhpam-service-dev-pam-istio-system.apps.labs-aws-430c.sandbox1287.opentlc.com/docs/"
 
 
-== Setup KIE Server/KJARs with multiple versions
+## Setup KIE Server/KJARs with multiple versions
 
 * Note: ImageStreams should come from 'openshift' namespace, secrets/settigs.xml should be available for KIE Server in namespace based on previous template config
 * Create 2 new PVCs required by the KIE Servers in 'pam-dev' 
@@ -99,7 +100,7 @@ spec:
   * Check KIALI UI: The requests (execute ./RHPAM-and-ServiceMesh/loop-pam-custom-kjar-a.sh) should be 80%-20% on each server based on VirtualService weights, play with the weights)
 
   
-=== Setup KIE Server/KJARs with multiple versions to use HTTP Header parameter
+### Setup KIE Server/KJARs with multiple versions to use HTTP Header parameter
 
 * After the previous setup is in place apply new ISTIO Configs OPTION-3a-ADVANCED-gateway-destrules-kie-server-HEADER-BASED-ROUTING.yaml
   * eg. cat ./RHPAM-and-ServiceMesh/OPTION-3a-ADVANCED-gateway-destrules-kie-server-HEADER-BASED-ROUTING.yaml | APP_SUBDOMAIN=$(echo $SUBDOMAIN) NAMESPACE=$(echo $APPS_NAMESPACE) envsubst | oc apply -f - 
@@ -110,7 +111,7 @@ spec:
 * This is the result of _Virtual Service_ *rhpam-virtual-service* checking for the header _bizversion_ and value 'version-kjar-a-110'
 
 
-=== Possible Smart Routing with ISTIO
+### Possible Smart Routing with ISTIO
 
 * We could create a *Smart Router* (Routing) effect with ISTIO
   * ALIAS BASED Route for all versions of a specific KJAR service eg. http://rhpam-service-a-${APPS_NAMESPACE}-istio-system.${SUBDOMAIN} (where -a- is the KJAR/ALIAS name)
