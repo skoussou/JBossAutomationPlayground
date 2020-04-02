@@ -9,11 +9,11 @@
   <distributionManagement>
     <repository>
       <id>releases</id>
-      <url>http://nexus-cicd-pam.apps.cluster-hapoalim-8074.hapoalim-8074.example.opentlc.com/repository/maven-releases/</url>
+      <url>http://nexus-cicd-pam.apps.cluster-cicd-b139.cicd-b139.example.opentlc.com/repository/maven-releases/</url>
     </repository>
     <snapshotRepository>
       <id>snapshots</id>
-      <url>http://nexus-cicd-pam.apps.cluster-hapoalim-8074.hapoalim-8074.example.opentlc.com/repository/maven-snapshots/</url>
+      <url>http://nexus-cicd-pam.apps.cluster-cicd-b139.cicd-b139.example.opentlc.com/repository/maven-releases/</url>
     </snapshotRepository>
   </distributionManagement>
 
