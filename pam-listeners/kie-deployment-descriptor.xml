@@ -17,11 +17,16 @@
             <identifier>new com.redhat.CustomProcessEventListener()</identifier>
             <parameters/>
         </event-listener>
+        <event-listener>
+            <resolver>mvel</resolver>
+            <identifier>new com.redhat.CustomProcessEventListener()</identifier>
+            <parameters/>
+        </event-listener>
     </event-listeners>
     <task-event-listeners>
         <task-event-listener>
             <resolver>mvel</resolver>
-            <identifier>new com.redhat.CustomTaskMonitorListener()</identifier>
+            <identifier>new com.redhat.rules.LogAgendaEventListener()</identifier>
             <parameters/>
         </task-event-listener>
     </task-event-listeners>
