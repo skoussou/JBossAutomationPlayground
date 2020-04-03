@@ -12,12 +12,12 @@ import org.drools.core.process.core.datatype.impl.type.BooleanDataType;
             "documentation" : "wih-example/index.html",
 
             "parameters" : [
-                                "DecisionIndicator" : new BooleanDataType(),
+                                "DecisionIndicator" : new StringDataType(),
                                 "DecisionCode" : new StringDataType()
 
             ],
             "results" : [
-				"DECISION"  : new BooleanDataType(),
+				"DECISION"  : new StringDataType(),
                                 "STATUS_CODE" : new StringDataType(),
                                 "CUSTOM_OBJECT" : new ObjectDataType()
             ],

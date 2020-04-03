@@ -38,7 +38,7 @@ public class ExampleWorkItemHandler extends AbstractLogOrThrowWorkItemHandler {
 
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 
-        Boolean decision = (Boolean) workItem.getParameter("DecisionIndicator");
+        String decision = (String) workItem.getParameter("DecisionIndicator");
         String decisionCode = (String) workItem.getParameter("DecisionCode");
         Map<String, Object> results = new HashMap<String, Object>();
         
