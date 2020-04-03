@@ -1,0 +1,31 @@
+import org.drools.core.process.core.datatype.impl.type.StringDataType;
+import org.drools.core.process.core.datatype.impl.type.ObjectDataType;
+import org.drools.core.process.core.datatype.impl.type.BooleanDataType;
+
+[
+        [
+            "name" : "ExampleWIH",
+            "displayName" : "ExampleWIH",
+            "category" : "CUSTOM-WIHs",
+            "description" : "",
+            "defaultHandler" : "mvel: new com.rehdat.ExampleWorkItemHandler()",
+            "documentation" : "wih-example/index.html",
+
+            "parameters" : [
+                                "DecisionIndicator" : new StringDataType(),
+                                "DecisionCode" : new StringDataType()
+
+            ],
+            "results" : [
+				"DECISION"  : new BooleanDataType(),
+                                "STATUS_CODE" : new StringDataType(),
+                                "CUSTOM_OBJECT" : new ObjectDataType()
+            ],
+            "mavenDependencies" : [
+                                 "com.redhat:wih-example:1.0.0"
+            ],
+            "icon" : "favicon-RH-2.png"
+
+        ]
+
+]
