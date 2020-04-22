@@ -1,0 +1,19 @@
+# hidden dir
+/.*
+!/.gitignore
+!/.caseproject
+!/.gitlab-ci.yml
+
+/bin/
+**/target/
+*.jpage
+**/project.repositories
+*.ucls
+*.backup
+
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
