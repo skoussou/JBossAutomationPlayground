@@ -9,7 +9,7 @@
     <event-listeners>
         <event-listener>
             <resolver>mvel</resolver>
-            <identifier>new com.redhat.CustomSLAViolationListener()</identifier>
+            <identifier>new com.redhat.CustomProcessEventListener()</identifier>
             <parameters/>
         </event-listener>
         <event-listener>
