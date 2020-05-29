@@ -3,10 +3,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.redhat</groupId>
-  <artifactId>stelios-retail-credit</artifactId>
+  <artifactId>retail-credit</artifactId>
   <version>1.18.0-SNAPSHOT</version>
   <packaging>kjar</packaging>
-  <name>Stelios Retail Credit</name>
+  <name>Retail Credit Processes</name>
   <description></description>
   <distributionManagement>
     <repository>

@@ -1,0 +1,3 @@
+= Processes For Retail Credit Approval
+
+* Requires retail-loans to be deployed in localhost:8180 KIE Server (WIH look kie-deployment-descriptor.xml)
