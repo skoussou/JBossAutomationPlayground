@@ -36,7 +36,7 @@ public class CustomObject implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "CustomGarantiObject [mapperType=" + mapperType + ", myName=" + myName + "]";
+		return "CustomObject [mapperType=" + mapperType + ", myName=" + myName + "]";
 	}
 	
 	

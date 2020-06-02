@@ -44,7 +44,10 @@ public class ExampleWorkItemHandler extends AbstractLogOrThrowWorkItemHandler {
         
 		
         try {		
-	
+    
+            /**THE SERVICE TAKS IMPLEMNTATION GOES */
+
+
             results.put("DECISION", decision);	
             if (decisionCode == null) decisionCode = "200";	
             results.put("STATUS_CODE", decisionCode);		
