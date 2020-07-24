@@ -54,6 +54,10 @@ public abstract class AbstractKieServerConnector {
 		return this.client.getServicesClient(RuleServicesClient.class);
 	}
 
+	public KieServicesClient getServicesClient(){
+		return this.client;
+	}
+
 	public AbstractKieServerConnector(String Url, String username, String password, Set<Class<?>> extraClassList,
 			MarshallingFormat format) {
 
