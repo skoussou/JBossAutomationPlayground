@@ -15,11 +15,16 @@ import java.util.Arrays;
 //import static org.jbpm.services.api.query.model.QueryParam.list;
 //import static org.jbpm.services.api.query.model.QueryParam.equalsTo;
 import org.jbpm.services.api.model.UserTaskInstanceWithVarsDesc;
+import org.kie.server.api.model.definition.QueryDefinition;
 import org.kie.server.api.model.definition.QueryFilterSpec;
 import org.kie.server.api.model.definition.SearchQueryFilterSpec;
 //import org.kie.server.api.model.definition.SearchQueryFilterSpec;
 
 import org.kie.server.api.model.definition.QueryParam;
+import org.kie.server.api.model.instance.TaskInstance;
+import org.kie.server.api.util.QueryFilterSpecBuilder;
+import org.kie.server.client.QueryServicesClient;
+
 import static org.kie.server.api.util.QueryParamFactory.equalsTo;
 import static org.kie.server.api.util.QueryParamFactory.list;
 import static org.kie.server.api.util.QueryParamFactory.onlyActiveTasks;
@@ -51,8 +56,9 @@ public class ExampleUsage extends AbstractKieServerConnector {
 
         //Find Active Tasks by Task Value
         //listActiveHTByVariables(client, null);
-        listCompletedHTByVariables(client, null);
-        //listHTByVariablesValues(client, null);
+        //listCompletedHTByVariables(client, null);
+        //listHTWithVariablesValues(client, null);
+        registerAndExecuteCustomQuery(client, null);
 
         //addPotOwnerOfTask(client, "stelios-retail-credit", 69L, "brokerUser", null);
         //addPotOwnerOfTask(client, "stelios-retail-credit", 69L, null, "broker");
@@ -114,24 +120,63 @@ public class ExampleUsage extends AbstractKieServerConnector {
         client.getQueryClient().queryUserTaskByVariables(spec, 0, 10);
     }
 
-    private static void listHTByVariablesValues(ExampleUsage client, Map<String, String> vars) {
+    //
+    private static void listHTWithVariablesValues(ExampleUsage client, Map<String, String> vars) {
         System.out.println("================== CUSTOM QUERIES - TASKS BY VARS VALUE ========================================================================");
-//        org.kie.server.api.model.definition.SearchQueryFilterSpec spec = new org.kie.server.api.model.definition.SearchQueryFilterSpec();
-//        //spec.setAttributesQueryParams(list(org.kie.server.api.util.QueryParamFactory.onlyActiveTasks(), equalsTo(PROCESS_ATTR_DEFINITION_ID, PROCESS_ID_USERTASK)));
-//
-//        List<QueryParam> taskVariables = list(onlyCompletedTasks(), equalsTo("tImportantVarIn", "Level-3"));
-//        //spec.setTaskVariablesQueryParams(list(org.kie.server.api.util.QueryParamFactory.onlyActiveTasks(), equalsTo("tExpenseFormCorrelationKey", "expenseForm-050")));
-//        //List<org.jbpm.services.api.query.model.QueryParam> taskVariables = list(equalsTo("tExpenseFormCorrelationKey", "expenseForm-050"));
-//        spec.setTaskVariablesQueryParams(taskVariables);
-
-         /*<T> List<T> query(String queryName, String mapper, Integer page, Integer pageSize, Class<T> resultType);
-         <T> List<T> query(String queryName, String mapper, String orderBy, Integer page, Integer pageSize, Class<T> resultType);
-         <T> List<T> query(String queryName, String mapper, QueryFilterSpec filterSpec, Integer page, Integer pageSize, Class<T> resultType);
-         <T> List<T> query(String queryName, String mapper, String builder, Map<String, Object> parameters, Integer page, Integer pageSize, Class<T> resultType);
-         <T> List<T> query(String containerId, String queryName, String mapper, String builder, Map<String, Object> parameters, Integer page, Integer pageSize, Class<T> resultType);
-*/
         client.getQueryClient().query("jbpmHumanTasksWithVariables", "UserTasksWithVariables", 0, 10, UserTaskInstanceWithVarsDesc.class);
     }
+
+    private static void registerAndExecuteCustomQuery (ExampleUsage client, Map<String, String> vars) {
+
+        String QUERY_NAME = "getSpecifcTasksWithVars";
+//        String LOGIN = "kieserver";
+//        String PASSWORD = "kieserver1!";
+//        private static final String SERVER_URL = "http://localhost:8080/kie-server/services/rest/server";
+
+
+            // setup the client
+//            KieServicesConfiguration conf = KieServicesFactory.newRestConfiguration(SERVER_URL, LOGIN, PASSWORD);
+//            KieServicesClient client = KieServicesFactory.newKieServicesClient(conf);
+            // get the query services client
+//            QueryServicesClient queryClient = client.getServicesClient(QueryServicesClient.class);
+
+
+            // building our query
+            QueryDefinition queryDefinition = QueryDefinition.builder().name(QUERY_NAME)
+                    .expression("select tvi.taskId, tvi.name, tvi.value from TaskVariableImpl tvi")
+                    .source("java:jboss/datasources/KIEServerDS")
+                    .target("TASK").build();
+            // we can't register two queries with the same name, so we might have to unregister existing queries with this name
+            client.getQueryClient().unregisterQuery(QUERY_NAME);
+            // getister the query
+            client.getQueryClient().registerQuery(queryDefinition);
+
+
+        QueryFilterSpec spec = new QueryFilterSpecBuilder()
+                .equalsTo("taskId", 2)
+//                .between("processInstanceId", 1000, 2000)
+//                .greaterThan("price", 800)
+//                .between("saleDate", from, to)
+//                .in("productCode", Arrays.asList("EAP", "WILDFLY"))
+//                .oderBy("saleDate, country", false)
+//                .addColumnMapping("COUNTRY", "string")
+//                .addColumnMapping("PRODUCTCODE", "string")
+//                .addColumnMapping("QUANTITY", "integer")
+//                .addColumnMapping("PRICE", "double")
+//                .addColumnMapping("SALEDATE", "date")
+                .get();
+
+            // executes the query
+            //List<TaskInstance> query = client.query(QUERY_NAME, QueryServicesClient.QUERY_MAP_TASK, 0, 100, TaskInstance.class);
+            //     <T> List<T> query(String queryName, String mapper, QueryFilterSpec filterSpec, Integer page, Integer pageSize, Class<T> resultType);
+            List<TaskInstance> query = client.getQueryClient().query(QUERY_NAME, "UserTasksWithVariables", spec, 0, 100, TaskInstance.class);
+
+            for (TaskInstance taskInstance : query) {
+                System.out.println(taskInstance);
+            }
+
+    }
+
 
     private static void getProcessDefinition(ExampleUsage client, String containerId, String processId) {
         System.out.println("================== LIST OF PROCESSES ========================================================================");
