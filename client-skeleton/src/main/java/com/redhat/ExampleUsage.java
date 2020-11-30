@@ -96,11 +96,7 @@ public class ExampleUsage extends AbstractKieServerConnector {
     // Process queries in API
     private static void listActiveHTByVariables(ExampleUsage client, Map<String, String> vars) {
         System.out.println("================== PROCESS QUERIES - [ACTIVE] TASKS BY VARS ========================================================================");        org.kie.server.api.model.definition.SearchQueryFilterSpec spec = new org.kie.server.api.model.definition.SearchQueryFilterSpec();
-        //spec.setAttributesQueryParams(list(org.kie.server.api.util.QueryParamFactory.onlyActiveTasks(), equalsTo(PROCESS_ATTR_DEFINITION_ID, PROCESS_ID_USERTASK)));
-
         List<QueryParam> taskVariables = list(onlyActiveTasks(), equalsTo("tImportantVarIn", "Level-3"));
-        //spec.setTaskVariablesQueryParams(list(org.kie.server.api.util.QueryParamFactory.onlyActiveTasks(), equalsTo("tExpenseFormCorrelationKey", "expenseForm-050")));
-        //List<org.jbpm.services.api.query.model.QueryParam> taskVariables = list(equalsTo("tExpenseFormCorrelationKey", "expenseForm-050"));
         spec.setTaskVariablesQueryParams(taskVariables);
         client.getQueryClient().queryUserTaskByVariables(spec, 0, 10);
     }
@@ -127,20 +123,9 @@ public class ExampleUsage extends AbstractKieServerConnector {
     }
 
     private static void registerAndExecuteCustomQuery (ExampleUsage client, Map<String, String> vars) {
+        System.out.println("================== CUSTOM QUERIES - TASKS with Query Filter ========================================================================");
 
         String QUERY_NAME = "getSpecifcTasksWithVars";
-//        String LOGIN = "kieserver";
-//        String PASSWORD = "kieserver1!";
-//        private static final String SERVER_URL = "http://localhost:8080/kie-server/services/rest/server";
-
-
-            // setup the client
-//            KieServicesConfiguration conf = KieServicesFactory.newRestConfiguration(SERVER_URL, LOGIN, PASSWORD);
-//            KieServicesClient client = KieServicesFactory.newKieServicesClient(conf);
-            // get the query services client
-//            QueryServicesClient queryClient = client.getServicesClient(QueryServicesClient.class);
-
-
             // building our query
             QueryDefinition queryDefinition = QueryDefinition.builder().name(QUERY_NAME)
                     .expression("select tvi.taskId, tvi.name, tvi.value from TaskVariableImpl tvi")
