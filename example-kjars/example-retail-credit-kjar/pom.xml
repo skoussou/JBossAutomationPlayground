@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.redhat</groupId>
   <artifactId>example-retail-credit</artifactId>
-  <version>1.0.4-SNAPSHOT</version>
+  <version>1.0.4</version>
   <packaging>kjar</packaging>
   <name>Example Retail Credit</name>
   <description>Retail Credit Process &amp; Rules</description>
