@@ -29,12 +29,6 @@
     <work-item-handlers>
         <work-item-handler>
             <resolver>mvel</resolver>
-            <identifier>new com.garantibbva.CustomRestWorkItemHandler()</identifier>
-            <parameters/>
-            <name>CustomRestDefinitions</name>
-        </work-item-handler>
-        <work-item-handler>
-            <resolver>mvel</resolver>
             <identifier>new com.redhat.CustomNewRestWorkItemHandler()</identifier>
             <parameters/>
 	    <name>CustomRestWIH</name>
