@@ -24,6 +24,13 @@
             <identifier>new com.redhat.CustomTaskMonitorListener()</identifier>
             <parameters/>
         </task-event-listener>
+        <!-- Commented out in favour of Emitter (see com.redhat.listeners.events.KafkaEventEmitter) but class also in place
+            <task-event-listener>
+                <resolver>mvel</resolver>
+                <identifier>new com.redhat.listeners.tasks.KafkaTaskListener(classLoader)</identifier>
+                <parameters/>
+            </task-event-listener>
+          -->
     </task-event-listeners>
     <globals/>
     <work-item-handlers>
