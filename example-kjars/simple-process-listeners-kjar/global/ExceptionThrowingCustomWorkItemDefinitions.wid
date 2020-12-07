@@ -1,0 +1,27 @@
+[
+        [
+            "name" : "ExceptionThrowingCustomWorkItemDefinitions",
+            "displayName" : "ExceptionThrowingCustomWorkItemDefinitions",
+            "category" : "CUSTOM-WIHS",
+            "description" : "",
+            "defaultHandler" : "mvel: new com.redhat.ExceptionThrowingCustomWorkItemWorkItemHandler()",
+            "documentation" : "exception-throwing-service-task/index.html",
+
+            "parameters" : [
+                                "SampleParam" : new StringDataType()
+                ,"SampleParamTwo" : new StringDataType()
+
+            ],
+            "results" : [
+                                "SampleResult" : new StringDataType()
+
+            ],
+            "mavenDependencies" : [
+                                 "org.jbpm.contrib:exception-throwing-service-task:7.33.0.Final-redhat-00003"
+
+            ],
+            "icon" : "RH.png"
+
+        ]
+
+]
