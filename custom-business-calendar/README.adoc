@@ -1,0 +1,69 @@
+= custom-business-calendar
+
+Contains []com.redhat.process.core.timer.HourFractionsBusinessCalendarImpl.java which implements a custom Business Calendar class to allow for busness start and end dates to have minute fractions eg. 8:30, 17,30 
+
+== How To use
+
+* Build and make available from MAVEN REPO this project
+* Create dependency from KJAR to 
+
+  <groupId>com.redhat</groupId>
+  <artifactId>custom-business-calendar</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+* In the KJAR add in kie-deployment-descriptor.xml 
+
+   <environment-entries>
+        <environment-entry>
+            <resolver>mvel</resolver>
+            <identifier>new com.redhat.process.core.timer.HourFractionsBusinessCalendarImpl()</identifier>
+            <parameters/>
+            <name>jbpm.business.calendar</name>
+        </environment-entry>
+    </environment-entries>
+
+== How To Configure jbpm.business.calendar.properties
+
+The following are necessary for Fraction Hours to work
+*  *hour.format* - property must be added to  - specifies business hours start *(business.start.hour*) and end  (*business.end.hour*) fraction format (only *HH:mm* is supported by this implementation)
+*  Both *business.start.hour* and *business.end.hour* must be provided with a fraction when *hour.format* is present even if fraction is 8:00 
+
+* Examples
+
+	#WITHIN HOURS
+	#hour.format=HH:mm
+	#business.start.hour=8:01
+	#business.end.hour=17:01
+	#business.hours.per.day=9
+	# with holidays
+	#business.holidays=2020-12-16
+
+
+	# AFTER HOURS
+	hour.format=HH:mm
+	business.start.hour=6:01
+	business.end.hour=15:01
+	business.hours.per.day=9
+	# with holidays
+	business.holidays=2020-12-18
+
+	# BEFORE HOURS
+	#hour.format=HH:mm
+	#business.start.hour=17:01
+	#business.end.hour=22:01
+	#business.hours.per.day=5
+
+
+	# BEFORE HOURS no Fraction
+	# business.start.hour=18
+	# business.end.hour=23
+	# business.hours.per.day=5
+
+
+	#WITHIN HOURS no Fraction
+	#business.start.hour=8
+	#business.end.hour=17
+	#business.hours.per.day=9
+	# with holidays
+	#business.holidays=2020-12-17
+
