@@ -1,6 +1,6 @@
 = custom-business-calendar
 
-Contains []com.redhat.process.core.timer.HourFractionsBusinessCalendarImpl.java which implements a custom Business Calendar class to allow for busness start and end dates to have minute fractions eg. 8:30, 17,30 
+Contains ./src/main/java/com/redhat/process/core/timer/HourFractionsBusinessCalendarImpl.java[com.redhat.process.core.timer.HourFractionsBusinessCalendarImpl.java] which implements a custom Business Calendar class to allow for busness start and end dates to have minute fractions eg. 8:30, 17,30 
 
 == How To use
 
