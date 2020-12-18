@@ -54,7 +54,10 @@ import org.slf4j.LoggerFactory;
  *  <li>business.holiday.date.format - specifies holiday date format used (default yyyy-MM-dd)</li>
  *  <li>business.weekend.days - specifies days of the weekend (default Saturday and Sunday)</li>
  *  <li>business.cal.timezone - specifies time zone to be used (if not given uses default of the system it runs on)</li>
- & The following are necessary for Fraction Hours to work
+ *  </ul>
+ *
+ *  The following are necessary for <b>Fraction Hours</b> to work
+ *  <ul>
  *  <li>hour.format - specifies business hours start (business.start.hour) and end  (business.end.hour) fraction format (only HH:mm currently supported) </li> 
  *  <li>Both business.start.hour and business.end.hour must be provided with a fraction when hour.format is present even if fraction is 8:00 </li> 
  * </ul>
@@ -98,14 +101,8 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
     private static final int     SIM_MIN = 9;
     private static final int     SIM_SEC = 11;
 
-    /* RFE-0001 to handle business start/end hour minutes */
-    /* only on to be supported right now hour.format=HH:mm */
-    /* To use Mins you need to define, right now, both start and end Hour minutes or not at all */
-    /* hour.format=HH:mm
-     * business.start.hour=8:30
-     * business.end.hour=17:30
-     * HOURS_PER_DAY=9
-     */
+    /* Handling business start/end hour with minute fractions */
+    /* Only supported format right now is hour.format=HH:mm */
     public static final String BUSINESS_HOUR_FORMAT = "hour.format";
     public static final String NONE = "none";
     public static final String START_HOUR_MINS = "business.start.hour";
@@ -192,8 +189,6 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
 
         daysPerWeek = getPropertyAsInt(DAYS_PER_WEEK, "5");
         hoursInDay = getPropertyAsInt(HOURS_PER_DAY, "8");
-//        startHour = getPropertyAsInt(START_HOUR, "9");
-//        endHour = getPropertyAsInt(END_HOUR, "17");
         holidays = parseHolidays();
         parseWeekendDays();
         this.timezone = businessCalendarConfiguration.getProperty(TIMEZONE);
@@ -258,12 +253,6 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
     }
 
     private Map<Integer, Integer> hoursminsToMapInt(String businessHoursMins) {
-//            String strMain = "Alpha, Beta, Delta, Gamma, Sigma";
-//            String[] arrSplit = strMain.split(", ");
-//            for (int i=0; i < arrSplit.length; i++)
-//            {
-//                System.out.println(arrSplit[i]);
-//            }
         return Arrays.asList(businessHoursMins)
                 .stream()
                 .map(str -> str.split(":"))
@@ -418,13 +407,9 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
         }
         handleWeekend(c, hours > 0 || min > 0);
         hours += (days - (numberOfWeeks * daysPerWeek)) * hoursInDay;
-        /* RFE-0001 - Normally minutes would come from ISO Format - but for BusinessCalendar based SLA
-         * we will take it from startHourMin and endHourMin. Could/Should we be calculating mins here?? and how?
-         */
 
         // calculate number of days
         int numberOfDays = hours/hoursInDay;
-        /* RFE-0001 - Maybe in hours calcilations to figure out numberOfDays we need to consider minutes?? */
         if (numberOfDays > 0) {
             for (int i = 0; i < numberOfDays; i++) {
                 c.add(Calendar.DAY_OF_YEAR, 1);
@@ -434,22 +419,20 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
         }
 
         int currentCalHour = c.get(Calendar.HOUR_OF_DAY);
-        /* RFE-0001 - Maybe in hours the following comparison if minutes take it beyond the end-of day???? */
         if (currentCalHour >= endHour) {
             c.add(Calendar.DAY_OF_YEAR, 1);
             c.add(Calendar.HOUR_OF_DAY, startHour-currentCalHour);
             c.set(Calendar.MINUTE, 0);
             c.set(Calendar.SECOND, 0);
-            c.add(Calendar.MINUTE, startHourMins); /* RFE-0001 - Change 2. If going to new day set also day start minutes on top of hour minutes now */
+            c.add(Calendar.MINUTE, startHourMins); /* RFE-0001 - If going to new day set also day start minutes on top of hour minutes now */
         } else if (currentCalHour < startHour) {
             //c.add(Calendar.HOUR_OF_DAY, startHour);
-            c.set(Calendar.HOUR_OF_DAY, startHour);
-            c.set(Calendar.MINUTE, startHourMins); /* RFE-0001 - Change 2. If going to new day set also day start minutes on top of hour minutes now */
+            c.set(Calendar.HOUR_OF_DAY, startHour);  /* RFE-0001 - This seemed to be a bug. See JIRA https://issues.redhat.com/browse/RHPAM-3354 */
+            c.set(Calendar.MINUTE, startHourMins);   /* RFE-0001 - Set time to include minutes of the starting time of the day when going to a new day */
         }
 
         // calculate remaining hours
         time = hours - (numberOfDays * hoursInDay);
-        /* RFE-0001 - Maybe also use minutes for remaining hours + minutes ???? */
         c.add(Calendar.HOUR, time);
         handleWeekend(c, true);
         handleHoliday(c, hours > 0 || min > 0);
@@ -463,10 +446,9 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
             /* Consider if startHourMins 20 and current time is 45 past it would have to go + 1 hour. The same if +min did this but lne 470 may take care of this */
             c.add(Calendar.HOUR_OF_DAY, currentCalHour - endHour);
         } else if (currentCalHour < startHour) {
-            // RFE-0001 -TODO - TEST with STARTHOUR < CURRENT HOUR eg. starthour 14:00
-            c.set(Calendar.HOUR_OF_DAY, startHour);
-            c.set(Calendar.MINUTE, startHourMins); /* RFE-0001 - Change 2. If going to new day set also day start minutes on top of hour minutes now */
-            /* RFE-0001 -Consider if startHourMins 20 and current time is 45 past it would have to go + 1 hour. The same if +min did this but lne 470 may take care of this */
+            //c.add(Calendar.HOUR_OF_DAY, startHour);
+            c.set(Calendar.HOUR_OF_DAY, startHour); /* RFE-0001 - This seemed to be a bug. See JIRA https://issues.redhat.com/browse/RHPAM-3354 */
+            c.set(Calendar.MINUTE, startHourMins);  /* RFE-0001 - Set time to include minutes of the starting time of the day when going to a new day */
         }
 
         // calculate minutes
@@ -498,10 +480,9 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
             /* RFE-0001 -Consider if startHourMins 20 and current time is 45 past it would have to go + 1 hour. The same if +min did this but lne 470 may take care of this */
             c.add(Calendar.HOUR_OF_DAY, currentCalHour - endHour);
         } else if (currentCalHour < startHour) {
-            // RFE-0001 - TODO - TEST with STARTHOUR < CURRENT HOUR eg. starthour 14:00
-            c.set(Calendar.HOUR_OF_DAY, startHour);
-            c.set(Calendar.HOUR_OF_DAY, startHourMins);
-            /* RFE-0001 -Consider if startHourMins 20 and current time is 45 past it would have to go + 1 hour. The same if +min did this but lne 470 may take care of this */
+            //c.add(Calendar.HOUR_OF_DAY, startHour);
+            c.set(Calendar.HOUR_OF_DAY, startHour);     /* RFE-0001 - This seemed to be a bug. See JIRA https://issues.redhat.com/browse/RHPAM-3354 */
+            c.set(Calendar.HOUR_OF_DAY, startHourMins); /* RFE-0001 - Set time to include minutes of the starting time of the day when going to a new day */
         }
         // take under consideration weekend
         handleWeekend(c, false);
