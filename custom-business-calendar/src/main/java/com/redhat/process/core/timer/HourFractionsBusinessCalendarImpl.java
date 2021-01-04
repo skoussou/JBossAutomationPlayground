@@ -112,6 +112,7 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
     private int startHourMins;
     private int endHourMins;
 
+
     public static final String DAYS_PER_WEEK = "business.days.per.week";
     public static final String HOURS_PER_DAY = "business.hours.per.day";
     public static final String START_HOUR = "business.start.hour";
@@ -239,24 +240,15 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
     public long calculateBusinessTimeAsDuration(String timeExpression) {
     	timeExpression = adoptISOFormat(timeExpression);
 
-        /* RFE-0001 to handle business start/end hour minutes */
+        /* RFE-0001 to handle business start/end hour minutfes */
         //        Date calculatedDate = calculateBusinessTimeAsDate(timeExpression);
         Date calculatedDate;
-        if (businessHourContainsMins) {  calculatedDate = calculateBusinessTimeAsDate(timeExpression, businessHourContainsMins); }
+
+        // Option to use default implementation vs Implementation with business day minutes
+        if (businessHourContainsMins) {  calculatedDate = calculateBusinessTimeAsDateWithMins(timeExpression, businessHourContainsMins); }
         else calculatedDate = calculateBusinessTimeAsDate(timeExpression);
 
         return (calculatedDate.getTime() - getCurrentTime());
-    }
-
-    private Boolean hasBusinessHourMinutes(String propValue){
-        return(!propValue.equals(NONE));
-    }
-
-    private Map<Integer, Integer> hoursminsToMapInt(String businessHoursMins) {
-        return Arrays.asList(businessHoursMins)
-                .stream()
-                .map(str -> str.split(":"))
-                .collect(toMap(str -> Integer.valueOf(str[0]), str -> Integer.valueOf(str[1])));
     }
 
     public Date calculateBusinessTimeAsDate(String timeExpression) {
@@ -368,7 +360,7 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
     }
 
     /* RFE-0001 to handle business start/end hour minutes */
-    public Date calculateBusinessTimeAsDate(String timeExpression, Boolean businessHourContainsMins ) {
+    public Date calculateBusinessTimeAsDateWithMins(String timeExpression, Boolean businessHourContainsMins ) {
         timeExpression = adoptISOFormat(timeExpression);
 
         String trimmed = timeExpression.trim();
@@ -389,6 +381,9 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
             }
         }
         int time = 0;
+        int timeHours = 0;
+        int timeMins = 0;
+        boolean isTimerStartDayHoliday = false;
 
 
         Calendar c = new GregorianCalendar();
@@ -405,8 +400,12 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
         if (numberOfWeeks > 0) {
             c.add(Calendar.WEEK_OF_YEAR, numberOfWeeks);
         }
+        isTimerStartDayHoliday = isTodayHoliday(c);
         handleWeekend(c, hours > 0 || min > 0);
+        // Handle holidays in case today is a holiday
+        handleHoliday(c, false);
         hours += (days - (numberOfWeeks * daysPerWeek)) * hoursInDay;
+
 
         // calculate number of days
         int numberOfDays = hours/hoursInDay;
@@ -414,76 +413,81 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
             for (int i = 0; i < numberOfDays; i++) {
                 c.add(Calendar.DAY_OF_YEAR, 1);
                 handleWeekend(c, false);
-                handleHoliday(c, hours > 0 || min > 0);
+                handleHoliday(c, false);
             }
         }
 
         int currentCalHour = c.get(Calendar.HOUR_OF_DAY);
-        if (currentCalHour >= endHour) {
-            c.add(Calendar.DAY_OF_YEAR, 1);
-            c.add(Calendar.HOUR_OF_DAY, startHour-currentCalHour);
-            c.set(Calendar.MINUTE, 0);
-            c.set(Calendar.SECOND, 0);
-            c.add(Calendar.MINUTE, startHourMins); /* RFE-0001 - If going to new day set also day start minutes on top of hour minutes now */
-        } else if (currentCalHour < startHour) {
-            //c.add(Calendar.HOUR_OF_DAY, startHour);
-            c.set(Calendar.HOUR_OF_DAY, startHour);  /* RFE-0001 - This seemed to be a bug. See JIRA https://issues.redhat.com/browse/RHPAM-3354 */
-            c.set(Calendar.MINUTE, startHourMins);   /* RFE-0001 - Set time to include minutes of the starting time of the day when going to a new day */
-        }
 
         // calculate remaining hours
-        time = hours - (numberOfDays * hoursInDay);
-        c.add(Calendar.HOUR, time);
-        handleWeekend(c, true);
-        handleHoliday(c, hours > 0 || min > 0);
-
-        currentCalHour = c.get(Calendar.HOUR_OF_DAY);
-        if (currentCalHour > endHour || (currentCalHour == endHour && endHourMins < c.get(Calendar.MINUTE)+min))  { /* RFE-0001 - Change 1. If beyond start of day by hour chek also by minutes before increasing by 1 day) */
-            c.add(Calendar.DAY_OF_YEAR, 1);
-            // set hour to the starting one
-            c.set(Calendar.HOUR_OF_DAY, startHour);
-            c.add(Calendar.MINUTE, startHourMins); /* RFE-0001 - Change 2. If going to new day set also day start minutes on top of hour minutes now */
-            /* Consider if startHourMins 20 and current time is 45 past it would have to go + 1 hour. The same if +min did this but lne 470 may take care of this */
-            c.add(Calendar.HOUR_OF_DAY, currentCalHour - endHour);
-        } else if (currentCalHour < startHour) {
-            //c.add(Calendar.HOUR_OF_DAY, startHour);
-            c.set(Calendar.HOUR_OF_DAY, startHour); /* RFE-0001 - This seemed to be a bug. See JIRA https://issues.redhat.com/browse/RHPAM-3354 */
-            c.set(Calendar.MINUTE, startHourMins);  /* RFE-0001 - Set time to include minutes of the starting time of the day when going to a new day */
-        }
+        timeHours = hours - (numberOfDays * hoursInDay);
+        timeHours += min/60;
 
         // calculate minutes
-        int numberOfHours = min/60;
-        if (numberOfHours > 0) {
-            c.add(Calendar.HOUR, numberOfHours);
-            min = min-(numberOfHours * 60);
-        }
-        c.add(Calendar.MINUTE, min);
+        timeMins = min-(min/60);
 
-        // calculate seconds
-        int numberOfMinutes = sec/60;
-        if (numberOfMinutes > 0) {
-            c.add(Calendar.MINUTE, numberOfMinutes);
-            sec = sec-(numberOfMinutes * 60);
+        // Starting timer before business day start
+        if (currentCalHour < startHour || (currentCalHour == startHour && c.get(Calendar.MINUTE) < startHourMins)) {
+            c.set(Calendar.HOUR_OF_DAY, startHour+timeHours);
+            c.set(Calendar.MINUTE, startHourMins+timeMins);
+            // TODO - Logical bug it should be calculatinng remainder secs and modifying mis. But simplifying as it can change day
+            c.set(Calendar.SECOND, sec);
         }
-        c.add(Calendar.SECOND, sec);
+        // Starting timer during business day hours
+        else if (currentCalHour > startHour &&
+                (currentCalHour < endHour || (currentCalHour == endHour && c.get(Calendar.MINUTE) < endHourMins))) {
+            // Remainder Time hours [after time = hours - (numberOfDays * hoursInDay); + numberOfHours = min/60] + remainder minutes are added to the beginning of the day and check if they crossed to another day
+            // 3-a if yes add day +1 + check holidays/weekends as it may add more days
+            // and then time must adjusted to be beginning of day + hours and minutes greater than end of day
+            if ((currentCalHour + timeHours) > endHour
+                    || ((currentCalHour + timeHours) == endHour && endHourMins < c.get(Calendar.MINUTE)+timeMins)
+                    || (((currentCalHour + timeHours) == endHour-1) && endHourMins < (c.get(Calendar.MINUTE)+timeMins)-60)) {
+                // 3-a if yes add day +1 + check holidays/weekends as it may add more days
+                if (!isTimerStartDayHoliday) c.add(Calendar.DAY_OF_YEAR, 1);
+                handleWeekend(c, false);
+                handleHoliday(c, false);
 
-        currentCalHour = c.get(Calendar.HOUR_OF_DAY);
-//        if (currentCalHour >= endHour) {
-//            c.add(Calendar.DAY_OF_YEAR, 1);
-//            // set hour to the starting one
-//            c.set(Calendar.HOUR_OF_DAY, startHour);
-        if (currentCalHour > endHour || (currentCalHour == endHour && endHourMins < c.get(Calendar.MINUTE)+min))  { /* RFE-0001 - Change 1. If beyond start of day by hour chek also by minutes before increasing by 1 day) */
-            c.add(Calendar.DAY_OF_YEAR, 1);
-            // set hour to the starting one
-            c.set(Calendar.HOUR_OF_DAY, startHour);
-            c.add(Calendar.MINUTE, startHourMins); /* RFE-0001 - Change 2. If going to new day set also day start minutes on top of hour minutes now */
-            /* RFE-0001 -Consider if startHourMins 20 and current time is 45 past it would have to go + 1 hour. The same if +min did this but lne 470 may take care of this */
-            c.add(Calendar.HOUR_OF_DAY, currentCalHour - endHour);
-        } else if (currentCalHour < startHour) {
-            //c.add(Calendar.HOUR_OF_DAY, startHour);
-            c.set(Calendar.HOUR_OF_DAY, startHour);     /* RFE-0001 - This seemed to be a bug. See JIRA https://issues.redhat.com/browse/RHPAM-3354 */
-            c.set(Calendar.HOUR_OF_DAY, startHourMins); /* RFE-0001 - Set time to include minutes of the starting time of the day when going to a new day */
+                // and then time must adjusted to be beginning of day + hours and minutes beyond end of day calculated and added
+                c.set(Calendar.HOUR_OF_DAY, startHour+timeHours);
+                int addMins = 0;
+                // If today was holiday no minutes from today should be used simply the timeMins
+                if (!isTimerStartDayHoliday) {
+                    addMins = (endHourMins < c.get(Calendar.MINUTE)+timeMins) ? ((c.get(Calendar.MINUTE)+timeMins)-endHourMins) : (endHourMins-(c.get(Calendar.MINUTE)+timeMins));
+                }
+                else {
+                    addMins = timeMins;
+                }
+                c.set(Calendar.MINUTE, startHourMins+addMins);
+                // TODO - Logical bug it should be calculatinng remainder secs and modifying mis. But simplifying as it can change day
+                c.set(Calendar.SECOND, sec);
+                // 3-b if no then time is going to be + The remainder hours [after time = hours - (numberOfDays * hoursInDay); + numberOfHours = min/60] + remainder minutes
+            } else {
+                if (!isTimerStartDayHoliday) {
+                    c.add(Calendar.HOUR_OF_DAY, timeHours);
+                    c.add(Calendar.MINUTE, timeMins);
+                    // TODO - Logical bug it should be calculatinng remainder secs and modifying mis. But simplifying as it can change day
+                    c.set(Calendar.SECOND, sec);
+                } else {
+                    c.set(Calendar.HOUR_OF_DAY, startHour+timeHours);
+                    c.set(Calendar.MINUTE, startHourMins+timeMins);
+                    // TODO - Logical bug it should be calculatinng remainder secs and modifying mis. But simplifying as it can change day
+                    c.set(Calendar.SECOND, 0);
+                }
+            }
         }
+        // Starting Timer after business day end
+        else { // currentCalHour > endHour
+            // Add + 1 day to go to next day and check weekends and holidays
+            if (!isTimerStartDayHoliday) { c.add(Calendar.DAY_OF_YEAR, 1);}
+            handleWeekend(c, false);
+            handleHoliday(c, false);
+            // The remaining the same as Option 1
+            c.set(Calendar.HOUR_OF_DAY, startHour+timeHours);
+            c.set(Calendar.MINUTE, startHourMins+timeMins);
+            // TODO - Logical bug it should be calculatinng remainder secs and modifying mis. But simplifying as it can change day
+            c.set(Calendar.SECOND, sec);
+        }
+
         // take under consideration weekend
         handleWeekend(c, false);
         // take under consideration holidays
@@ -491,21 +495,26 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
 
         return c.getTime();
     }
-    
+
     protected void handleHoliday(Calendar c, boolean resetTime) {
         if (!holidays.isEmpty()) {
             Date current = c.getTime();
+            boolean holidayMatchFound = false;
             for (TimePeriod holiday : holidays) {
                 // check each holiday if it overlaps current date and break after first match
                 if (current.after(holiday.getFrom()) && current.before(holiday.getTo())) {
                     
                     Calendar tmp = new GregorianCalendar();
-                    tmp.setTime(holiday.getTo());   
-                    
+                    tmp.setTime(holiday.getTo());
+                    tmp.set(Calendar.HOUR_OF_DAY, startHour);
+                    tmp.set(Calendar.MINUTE, startHourMins);
+                    tmp.set(Calendar.SECOND, 0);
+                    tmp.set(Calendar.MILLISECOND, 0);
+
                     Calendar tmp2 = new GregorianCalendar();
                     tmp2.setTime(current);
-                    tmp2.set(Calendar.HOUR_OF_DAY, 0);
-                    tmp2.set(Calendar.MINUTE, 0);
+                    tmp2.set(Calendar.HOUR_OF_DAY, startHour);
+                    tmp2.set(Calendar.MINUTE, startHourMins);
                     tmp2.set(Calendar.SECOND, 0);
                     tmp2.set(Calendar.MILLISECOND, 0);
 
@@ -514,11 +523,16 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
                     c.add(Calendar.HOUR_OF_DAY, (int) (difference/HOUR_IN_MILLIS));
                     
                     handleWeekend(c, resetTime);
+                    // Logic to NOT break after first match but instead set flag that match found
+                    holidayMatchFound = true;
+                    current = c.getTime();
+                    //break;
+                } else if (holidayMatchFound) {
+                    // if holidayMatchFound=true in previous run BUT in this run not found then break
                     break;
                 }
             }
         }
-        
     }
 
     protected int getPropertyAsInt(String propertyName, String defaultValue) {
@@ -642,6 +656,29 @@ public class HourFractionsBusinessCalendarImpl implements BusinessCalendar {
                 this.weekendDays.add(Integer.parseInt(day));
             }
         }
+    }
+
+    private Boolean hasBusinessHourMinutes(String propValue){
+        return(!propValue.equals(NONE));
+    }
+
+    private Map<Integer, Integer> hoursminsToMapInt(String businessHoursMins) {
+        return Arrays.asList(businessHoursMins)
+                .stream()
+                .map(str -> str.split(":"))
+                .collect(toMap(str -> Integer.valueOf(str[0]), str -> Integer.valueOf(str[1])));
+    }
+
+    private boolean isTodayHoliday(Calendar c) {
+        if (!holidays.isEmpty()) {
+            Date current = c.getTime();
+            for (TimePeriod holiday : holidays) {
+                if (current.after(holiday.getFrom()) && current.before(holiday.getTo())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private class TimePeriod {
